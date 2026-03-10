@@ -214,6 +214,61 @@
 
     <script src="js/main.js"></script>
     <script>
+        // Initialize default placement data if not exists
+        if (!localStorage.getItem('placements')) {
+            const defaultPlacements = [
+                // 2023-24 Placements (47 students)
+                { id: 1, studentName: "Samadhan Chaudhari", rollNumber: "20211027226519", company: "TCS, Pune", year: "2023-24" },
+                { id: 2, studentName: "Rahul Rameshwar Chute", rollNumber: "20211027226512", company: "ESAF Small Finance Bank", year: "2023-24" },
+                { id: 3, studentName: "Jeet Agrawal", rollNumber: "20211027226502", company: "MENRVA TECHNOLOGIES", year: "2023-24" },
+                { id: 4, studentName: "Kumudini Barasagade", rollNumber: "20221027203112", company: "Instant Career Academy", year: "2023-24" },
+                { id: 5, studentName: "Tushar Narayan Hiwarkar", rollNumber: "20211027226531", company: "TCS, Pune", year: "2023-24" },
+                { id: 6, studentName: "Monish Tarachand Khidkikar", rollNumber: "20211027226505", company: "Genpact India Pvt. Ltd", year: "2023-24" },
+                { id: 7, studentName: "Piyush Lingayat", rollNumber: "20221027203120", company: "ESAF Small Finance Bank", year: "2023-24" },
+                { id: 8, studentName: "Abhishek Kombe", rollNumber: "20211027226491", company: "MS IT Services Pvt Ltd", year: "2023-24" },
+                { id: 9, studentName: "Anannya Moundekar", rollNumber: "20211027226472", company: "ExcelR EdTech Pvt. Ltd.", year: "2023-24" },
+                { id: 10, studentName: "Asif Siddiqui", rollNumber: "20221027203118", company: "The Kiran Academy", year: "2023-24" },
+                { id: 11, studentName: "Ayush Nighot", rollNumber: "20221027203114", company: "Smart Data Enterprices Ltd", year: "2023-24" },
+                { id: 12, studentName: "Bhagyashri Agrawal", rollNumber: "20221027226497", company: "Waysprire Ed-Tech Pvt. Ltd.", year: "2023-24" },
+                { id: 13, studentName: "Diksha Tembhare", rollNumber: "20211027226473", company: "The Kiran Academy", year: "2023-24" },
+                { id: 14, studentName: "Dilkash Kamble", rollNumber: "20211027226499", company: "SGS Technical Services Pvt Ltd", year: "2023-24" },
+                { id: 15, studentName: "Gaurav Dane", rollNumber: "20211027226500", company: "MSIT Services Pvt Ltd", year: "2023-24" },
+                { id: 16, studentName: "Anand Patil", rollNumber: "20211027226494", company: "The Kiran Academy", year: "2023-24" },
+                { id: 17, studentName: "Harshali Kanoje", rollNumber: "20211027226474", company: "Hexaware Technologies", year: "2023-24" },
+                { id: 18, studentName: "Sanika Patare", rollNumber: "20211027226483", company: "MSIT Services Pvt Ltd", year: "2023-24" },
+                { id: 19, studentName: "Mangesh Meshram", rollNumber: "20221027203116", company: "Smart Data Enterprices Ltd", year: "2023-24" },
+                { id: 20, studentName: "Nikita Ramchandra Kadiwike", rollNumber: "20211027226507", company: "Numetry Technologies Pvt Ltd", year: "2023-24" },
+                { id: 21, studentName: "Samir Dholane", rollNumber: "20211027226521", company: "Byju's Pvt. Ltd.", year: "2023-24" },
+                { id: 22, studentName: "Poonam Dighole", rollNumber: "20211027226477", company: "AROHI Software Development", year: "2023-24" },
+                { id: 23, studentName: "Prachi Dahikar", rollNumber: "20211027226478", company: "CapitalVia FinTech Pvt. Ltd.", year: "2023-24" },
+                { id: 24, studentName: "Rupa Bawane", rollNumber: "20211027226479", company: "SGS Technical Services Pvt Ltd", year: "2023-24" },
+                { id: 25, studentName: "Radha Gondchor", rollNumber: "20211027226480", company: "Hexaware Technologies", year: "2023-24" },
+                { id: 26, studentName: "Shweta Turankar", rollNumber: "20211027226485", company: "MS IT Services Pvt Ltd", year: "2023-24" },
+                { id: 27, studentName: "Raj Shekokar", rollNumber: "20211027226513", company: "Cofag Investment Advisor", year: "2023-24" },
+                { id: 28, studentName: "Ritika Arya", rollNumber: "20211027226481", company: "PIE Infocomm Pvt Ltd", year: "2023-24" },
+                { id: 29, studentName: "Rujvet Wasnik", rollNumber: "20211027226516", company: "CapitalVia FinTech Pvt. Ltd.", year: "2023-24" },
+                { id: 30, studentName: "Sagar Chourasia", rollNumber: "20221027203121", company: "SGS Technical Services Pvt Ltd", year: "2023-24" },
+                { id: 31, studentName: "Samyek Khobragade", rollNumber: "20211027226522", company: "CapitalVia FinTech Pvt. Ltd.", year: "2023-24" },
+                { id: 32, studentName: "Sanskruti Shambharkar", rollNumber: "20211027226484", company: "PIE Infocomm Pvt Ltd", year: "2023-24" },
+                { id: 33, studentName: "Sufia Mohankar", rollNumber: "20211027226486", company: "ESAF Small Finance Bank", year: "2023-24" },
+                { id: 34, studentName: "Tushar Sonkusare", rollNumber: "20211027226530", company: "MS IT Services Pvt Ltd", year: "2023-24" },
+                { id: 35, studentName: "Vaibhav Chaudhari", rollNumber: "20211027226532", company: "MS IT Services Pvt Ltd", year: "2023-24" },
+                { id: 36, studentName: "Vaibhav Rathod", rollNumber: "20211027226533", company: "Byju's Pvt. Ltd.", year: "2023-24" },
+                { id: 37, studentName: "Suraj Pathade", rollNumber: "20211027226528", company: "The Kiran Academy", year: "2023-24" },
+                { id: 38, studentName: "Sachin Kiran Ranmale", rollNumber: "20211027226739", company: "MS IT Services Pvt. Ltd", year: "2023-24" },
+                { id: 39, studentName: "Vina Vithhal Kadukar", rollNumber: "20221027203113", company: "MS IT Services Pvt. Ltd", year: "2023-24" },
+                { id: 40, studentName: "Sukanya Bhujade", rollNumber: "20211027226487", company: "MS IT Services Pvt. Ltd", year: "2023-24" },
+                { id: 41, studentName: "Pallavi Dhande", rollNumber: "20211027226508", company: "MS IT Services Pvt. Ltd", year: "2023-24" },
+                { id: 42, studentName: "Manisha Mahule", rollNumber: "20211027226504", company: "MS IT Services Pvt. Ltd", year: "2023-24" },
+                { id: 43, studentName: "Samiksha Sahare", rollNumber: "20211027226520", company: "MS IT Services Pvt. Ltd", year: "2023-24" },
+                { id: 44, studentName: "Raj Rabin Das", rollNumber: "20211027226514", company: "Waysprire Ed-Tech Pvt. Ltd.", year: "2023-24" },
+                { id: 45, studentName: "Yogesh Alokar", rollNumber: "20211027226535", company: "Hexaware Technologies", year: "2023-24" },
+                { id: 46, studentName: "Kunal Waghmare", rollNumber: "20211027226503", company: "The Kiran Academy", year: "2023-24" },
+                { id: 47, studentName: "Aditya Samrit", rollNumber: "20211027226492", company: "Waysprire Ed-Tech Pvt. Ltd.", year: "2023-24" }
+            ];
+            localStorage.setItem('placements', JSON.stringify(defaultPlacements));
+        }
+
         // Load placements from localStorage
         function loadPlacements() {
             const placements = JSON.parse(localStorage.getItem('placements')) || [];
