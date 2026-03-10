@@ -30,6 +30,8 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
 }
 
 /* === TOP INFO BANNER === */
@@ -372,20 +374,22 @@ nav a.active {
 
 /* === CONTAINER === */
 .container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
+    width: 100%;
 }
 
 /* === HERO SECTION === */
 .hero {
-    min-height: 100vh;
+    min-height: 85vh;
     display: flex;
     align-items: center;
-    padding-top: 100px;
+    padding-top: 80px;
     position: relative;
     background: #0a0e1a;
     overflow: hidden;
+    width: 100%;
 }
 
 /* Animated circuit board pattern */
@@ -545,7 +549,7 @@ nav a.active {
 }
 
 .hero h1 {
-    font-size: 4.5rem;
+    font-size: 3.2rem;
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 1.5rem;
@@ -676,7 +680,7 @@ nav a.active {
 }
 
 .hero-content h1 {
-    font-size: 4.5rem;
+    font-size: 3.2rem;
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 1.5rem;
@@ -739,7 +743,7 @@ nav a.active {
 }
 
 .hero-content p {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
     color: var(--text-secondary);
     max-width: 950px;
     margin-bottom: 2rem;
@@ -954,11 +958,11 @@ footer {
     }
     
     .hero-content h1 {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
     
     .hero h1 {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
     
     nav ul {
