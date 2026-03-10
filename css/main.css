@@ -24,12 +24,6 @@
     box-sizing: border-box;
 }
 
-html {
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100vw;
-}
-
 body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -215,35 +209,37 @@ header {
 }
 
 .header-container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 0.8rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.8rem;
+    flex-shrink: 0;
 }
 
 .logo-section img {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
 }
 
 .logo-text h1 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
 }
 
 .logo-text p {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text-secondary);
     margin: 0;
 }
@@ -251,16 +247,21 @@ header {
 nav ul {
     display: flex;
     list-style: none;
-    gap: 0.5rem;
+    gap: 0.3rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav ul li a {
     color: var(--text-primary);
     text-decoration: none;
-    padding: 0.75rem 1.25rem;
-    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
     font-weight: 500;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 nav ul li a:hover {
@@ -985,12 +986,78 @@ footer {
         font-size: 2rem;
     }
     
-    nav ul {
+    /* Show hamburger menu */
+    .hamburger {
+        display: flex !important;
+    }
+    
+    /* Hide nav by default */
+    nav {
         display: none;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(59, 130, 246, 0.3);
+        z-index: 1000;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+    }
+    
+    /* Show nav when active */
+    nav.active {
+        display: block !important;
+    }
+    
+    /* Stack nav items vertically */
+    nav ul {
+        display: flex !important;
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+        margin: 0;
+    }
+    
+    nav ul li {
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    nav ul li:last-child {
+        border-bottom: none;
+    }
+    
+    nav ul li a {
+        display: block;
+        padding: 1.2rem 2rem;
+        width: 100%;
+        text-align: left;
+        border-radius: 0;
+        font-size: 1rem;
+    }
+    
+    nav ul li a:hover,
+    nav ul li a.active {
+        background: rgba(59, 130, 246, 0.2);
     }
     
     .header-container {
-        padding: 1rem;
+        padding: 1rem 1.5rem;
+    }
+    
+    .logo-section img {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .logo-text h1 {
+        font-size: 1rem;
+    }
+    
+    .logo-text p {
+        font-size: 0.7rem;
     }
 }
 
