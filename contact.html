@@ -231,6 +231,36 @@
     </footer>
     <script src="js/main.js"></script>
     <script src="js/contact-form.js"></script>
+    <script>
+        // Save contact form messages to localStorage for admin dashboard
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                // Don't prevent default - let FormSubmit handle the submission
+                // But also save to localStorage for admin dashboard
+                try {
+                    const formData = new FormData(contactForm);
+                    const newMessage = {
+                        id: Date.now().toString(),
+                        name: formData.get('name') || 'Unknown User',
+                        email: formData.get('email') || 'No Email',
+                        phone: formData.get('phone') || 'N/A',
+                        subject: formData.get('subject') || 'General Inquiry',
+                        message: formData.get('message') || '',
+                        date: new Date().toISOString().split('T')[0],
+                        isRead: false
+                    };
+
+                    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                    messages.unshift(newMessage); // Add to top
+                    localStorage.setItem('messages', JSON.stringify(messages));
+                    console.log('✅ Message saved to Admin Dashboard');
+                } catch (err) {
+                    console.error('Error saving message:', err);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
