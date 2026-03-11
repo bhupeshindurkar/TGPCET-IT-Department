@@ -143,6 +143,15 @@ section {
     border-radius: 20px;
     padding: 2rem;
     transition: all 0.3s ease;
+    text-align: center;
+}
+
+.glass-card h2,
+.glass-card h3,
+.glass-card h4,
+.glass-card h5,
+.glass-card p {
+    text-align: center;
 }
 
 .glass-card:hover {
@@ -297,15 +306,6 @@ nav ul li a.active {
     border-radius: 3px;
     transition: all 0.3s ease;
 }
-    -webkit-backdrop-filter: blur(20px);
-    position: fixed;
-    width: 100%;
-    top: 35px; /* Height of top bar */
-    z-index: 1000;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-}
 
 header.scrolled {
     top: 0;
@@ -414,6 +414,33 @@ nav a.active {
     background: linear-gradient(135deg, #0a0e1a 0%, #0f172a 50%, #1e293b 100%);
     overflow: hidden;
     width: 100%;
+    text-align: center;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #3b82f6 50%, #8b5cf6 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    position: relative;
+    display: inline-block;
+    animation: fadeInUp 1s ease-out, gradientFlow 3s ease infinite, glitchText 5s infinite;
+    text-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+    text-align: center;
 }
 
 /* Animated circuit board pattern */
@@ -826,11 +853,27 @@ nav a.active {
 .grid {
     display: grid;
     gap: 2rem;
+    justify-items: center;
+    justify-content: center;
 }
 
-.grid-2 { grid-template-columns: repeat(2, 1fr); }
-.grid-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-2 { 
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.grid-3 { 
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.grid-4 { 
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
 /* === CARDS === */
 .card {
@@ -839,6 +882,23 @@ nav a.active {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 2rem;
+    width: 100%;
+    text-align: center;
+}
+
+.card h3,
+.card h4,
+.card h5,
+.card p {
+    text-align: center;
+}
+
+.card ul {
+    text-align: left;
+    display: inline-block;
+}
+
+.card {
     transition: all 0.3s ease;
 }
 
@@ -916,6 +976,32 @@ nav a.active {
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
 }
 
+/* Center all section content */
+section {
+    text-align: center;
+}
+
+section h1,
+section h2,
+section h3,
+section h4,
+section h5,
+section h6 {
+    text-align: center;
+}
+
+section p {
+    text-align: center;
+}
+
+/* Keep lists left-aligned but centered as a block */
+section ul,
+section ol {
+    text-align: left;
+    display: inline-block;
+    max-width: 100%;
+}
+
 h2 {
     font-size: 2.2rem;
     font-weight: 700;
@@ -924,6 +1010,7 @@ h2 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-align: center;
 }
 
 h3 {
@@ -931,6 +1018,7 @@ h3 {
     font-weight: 600;
     margin-bottom: 1rem;
     color: var(--text-primary);
+    text-align: center;
 }
 
 h4 {
@@ -938,6 +1026,23 @@ h4 {
     font-weight: 600;
     margin-bottom: 0.75rem;
     color: var(--text-primary);
+    text-align: center;
+}
+
+h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+h6 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    text-align: center;
 }
 
 /* === FOOTER === */
@@ -953,15 +1058,27 @@ footer {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 .footer-section h3 {
     color: var(--primary-color);
     margin-bottom: 1rem;
+    text-align: center;
+}
+
+.footer-section {
+    text-align: center;
+}
+
+.footer-section p {
+    text-align: center;
 }
 
 .footer-section ul {
     list-style: none;
+    text-align: center;
+    padding: 0;
 }
 
 .footer-section a {
@@ -979,6 +1096,10 @@ footer {
     padding-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-secondary);
+}
+
+.footer-bottom p {
+    text-align: center;
 }
 
 /* === RESPONSIVE === */
