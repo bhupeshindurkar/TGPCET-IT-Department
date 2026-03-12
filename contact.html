@@ -98,6 +98,7 @@
             <form id="contactForm" action="https://formsubmit.co/bhupeshindurkar6@gmail.com" method="POST">
                 <!-- FormSubmit Configuration -->
                 <input type="hidden" name="_subject" value="New Contact Form Submission - TGPCET IT Department">
+                <input type="hidden" name="_next" value="https://tgpcet-it-department.vercel.app/thank-you.html">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_template" value="table">
                 <input type="text" name="_honey" style="display:none">
@@ -230,33 +231,58 @@
         </div>
     </footer>
     <script src="js/main.js"></script>
+    <script src="js/api-client.js"></script>
     <script src="js/contact-form.js"></script>
     <script>
-        // Save contact form messages to localStorage for admin dashboard
+        // Save contact form messages to MongoDB API and localStorage
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                // Don't prevent default - let FormSubmit handle the submission
-                // But also save to localStorage for admin dashboard
+            contactForm.addEventListener('submit', async function(e) {
+                // Don't prevent default - let FormSubmit handle email submission
+                
                 try {
                     const formData = new FormData(contactForm);
-                    const newMessage = {
-                        id: Date.now().toString(),
+                    const messageData = {
                         name: formData.get('name') || 'Unknown User',
                         email: formData.get('email') || 'No Email',
                         phone: formData.get('phone') || 'N/A',
                         subject: formData.get('subject') || 'General Inquiry',
                         message: formData.get('message') || '',
-                        date: new Date().toISOString().split('T')[0],
-                        isRead: false
+                        timestamp: new Date().toISOString(),
+                        read: false
                     };
 
-                    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-                    messages.unshift(newMessage); // Add to top
-                    localStorage.setItem('messages', JSON.stringify(messages));
-                    console.log('✅ Message saved to Admin Dashboard');
+                    // Save to MongoDB API (if available)
+                    if (window.API && window.API.messages) {
+                        try {
+                            await API.messages.add(messageData);
+                            console.log('✅ Message saved to MongoDB');
+                        } catch (apiError) {
+                            console.warn('⚠️ API not available, saving to localStorage');
+                            // Fallback to localStorage
+                            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                            messages.unshift({
+                                id: Date.now().toString(),
+                                ...messageData,
+                                date: new Date().toISOString().split('T')[0],
+                                isRead: false
+                            });
+                            localStorage.setItem('messages', JSON.stringify(messages));
+                        }
+                    } else {
+                        // Fallback to localStorage if API not loaded
+                        const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                        messages.unshift({
+                            id: Date.now().toString(),
+                            ...messageData,
+                            date: new Date().toISOString().split('T')[0],
+                            isRead: false
+                        });
+                        localStorage.setItem('messages', JSON.stringify(messages));
+                        console.log('✅ Message saved to localStorage');
+                    }
                 } catch (err) {
-                    console.error('Error saving message:', err);
+                    console.error('❌ Error saving message:', err);
                 }
             });
         }
