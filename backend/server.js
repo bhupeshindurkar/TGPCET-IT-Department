@@ -30,20 +30,28 @@ mongoose.connect(MONGODB_URI, {
 const gallerySchema = new mongoose.Schema({
     title: String,
     category: String,
-    imageUrl: String,
+    image: String,
+    date: String,
     timestamp: { type: Date, default: Date.now }
 });
 
 const newsSchema = new mongoose.Schema({
     title: String,
-    content: String,
+    date: String,
+    category: String,
+    description: String,
+    image: String,
     timestamp: { type: Date, default: Date.now }
 });
 
 const eventSchema = new mongoose.Schema({
-    title: String,
+    name: String,
     date: String,
+    type: String,
     description: String,
+    status: String,
+    resourcePerson: String,
+    designation: String,
     timestamp: { type: Date, default: Date.now }
 });
 
@@ -52,6 +60,18 @@ const placementSchema = new mongoose.Schema({
     rollNumber: String,
     company: String,
     year: String,
+    timestamp: { type: Date, default: Date.now }
+});
+
+const facultySchema = new mongoose.Schema({
+    name: String,
+    designation: String,
+    qualification: String,
+    specialization: String,
+    email: String,
+    phone: String,
+    experience: String,
+    image: String,
     timestamp: { type: Date, default: Date.now }
 });
 
@@ -70,6 +90,7 @@ const Gallery = mongoose.model('Gallery', gallerySchema);
 const News = mongoose.model('News', newsSchema);
 const Event = mongoose.model('Event', eventSchema);
 const Placement = mongoose.model('Placement', placementSchema);
+const Faculty = mongoose.model('Faculty', facultySchema);
 const Message = mongoose.model('Message', messageSchema);
 
 // Routes
@@ -194,6 +215,35 @@ app.delete('/api/placements/:id', async (req, res) => {
     try {
         await Placement.findByIdAndDelete(req.params.id);
         res.json({ message: 'Placement deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Faculty Routes
+app.get('/api/faculty', async (req, res) => {
+    try {
+        const faculty = await Faculty.find().sort({ timestamp: -1 });
+        res.json(faculty);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/api/faculty', async (req, res) => {
+    try {
+        const newFaculty = new Faculty(req.body);
+        await newFaculty.save();
+        res.status(201).json(newFaculty);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/api/faculty/:id', async (req, res) => {
+    try {
+        await Faculty.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Faculty deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

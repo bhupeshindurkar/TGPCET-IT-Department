@@ -24,11 +24,17 @@ const AdminAPI = {
     async getGallery() {
         if (this.isAPIAvailable) {
             try {
-                return await API.gallery.getAll();
+                const data = await API.gallery.getAll();
+                if (data && data.length > 0) {
+                    // Save to localStorage as backup
+                    localStorage.setItem('gallery', JSON.stringify(data));
+                    return data;
+                }
             } catch (error) {
-                console.error('API error, falling back to localStorage');
+                console.error('API error, falling back to localStorage:', error);
             }
         }
+        // Fallback to localStorage
         return JSON.parse(localStorage.getItem('gallery')) || [];
     },
 
@@ -71,9 +77,13 @@ const AdminAPI = {
     async getMessages() {
         if (this.isAPIAvailable) {
             try {
-                return await API.messages.getAll();
+                const data = await API.messages.getAll();
+                if (data && data.length > 0) {
+                    localStorage.setItem('messages', JSON.stringify(data));
+                    return data;
+                }
             } catch (error) {
-                console.error('API error, falling back to localStorage');
+                console.error('API error, falling back to localStorage:', error);
             }
         }
         return JSON.parse(localStorage.getItem('messages')) || [];
@@ -115,9 +125,13 @@ const AdminAPI = {
     async getNews() {
         if (this.isAPIAvailable) {
             try {
-                return await API.news.getAll();
+                const data = await API.news.getAll();
+                if (data && data.length > 0) {
+                    localStorage.setItem('news', JSON.stringify(data));
+                    return data;
+                }
             } catch (error) {
-                console.error('API error, falling back to localStorage');
+                console.error('API error, falling back to localStorage:', error);
             }
         }
         return JSON.parse(localStorage.getItem('news')) || [];
@@ -161,9 +175,13 @@ const AdminAPI = {
     async getEvents() {
         if (this.isAPIAvailable) {
             try {
-                return await API.events.getAll();
+                const data = await API.events.getAll();
+                if (data && data.length > 0) {
+                    localStorage.setItem('events', JSON.stringify(data));
+                    return data;
+                }
             } catch (error) {
-                console.error('API error, falling back to localStorage');
+                console.error('API error, falling back to localStorage:', error);
             }
         }
         return JSON.parse(localStorage.getItem('events')) || [];
@@ -205,9 +223,13 @@ const AdminAPI = {
     async getPlacements() {
         if (this.isAPIAvailable) {
             try {
-                return await API.placements.getAll();
+                const data = await API.placements.getAll();
+                if (data && data.length > 0) {
+                    localStorage.setItem('placements', JSON.stringify(data));
+                    return data;
+                }
             } catch (error) {
-                console.error('API error, falling back to localStorage');
+                console.error('API error, falling back to localStorage:', error);
             }
         }
         return JSON.parse(localStorage.getItem('placements')) || [];
@@ -243,6 +265,54 @@ const AdminAPI = {
         let placements = JSON.parse(localStorage.getItem('placements')) || [];
         placements = placements.filter(item => item.id != id && item._id != id);
         localStorage.setItem('placements', JSON.stringify(placements));
+    },
+
+    // Faculty Methods
+    async getFaculty() {
+        if (this.isAPIAvailable) {
+            try {
+                const data = await API.faculty.getAll();
+                if (data && data.length > 0) {
+                    localStorage.setItem('faculty', JSON.stringify(data));
+                    return data;
+                }
+            } catch (error) {
+                console.error('API error, falling back to localStorage:', error);
+            }
+        }
+        return JSON.parse(localStorage.getItem('faculty')) || [];
+    },
+
+    async addFaculty(data) {
+        if (this.isAPIAvailable) {
+            try {
+                const result = await API.faculty.add(data);
+                const faculty = JSON.parse(localStorage.getItem('faculty')) || [];
+                faculty.push({ ...data, id: result._id || Date.now() });
+                localStorage.setItem('faculty', JSON.stringify(faculty));
+                return result;
+            } catch (error) {
+                console.error('API error, saving to localStorage only');
+            }
+        }
+        const faculty = JSON.parse(localStorage.getItem('faculty')) || [];
+        const newItem = { ...data, id: Date.now() };
+        faculty.push(newItem);
+        localStorage.setItem('faculty', JSON.stringify(faculty));
+        return newItem;
+    },
+
+    async deleteFaculty(id) {
+        if (this.isAPIAvailable) {
+            try {
+                await API.faculty.delete(id);
+            } catch (error) {
+                console.error('API error:', error);
+            }
+        }
+        let faculty = JSON.parse(localStorage.getItem('faculty')) || [];
+        faculty = faculty.filter(item => item.id != id && item._id != id);
+        localStorage.setItem('faculty', JSON.stringify(faculty));
     }
 };
 

@@ -163,6 +163,45 @@ const API = {
         }
     },
 
+    // Faculty API
+    faculty: {
+        async getAll() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/faculty`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching faculty:', error);
+                return [];
+            }
+        },
+
+        async add(facultyData) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/faculty`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(facultyData)
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('Error adding faculty:', error);
+                throw error;
+            }
+        },
+
+        async delete(id) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/faculty/${id}`, {
+                    method: 'DELETE'
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('Error deleting faculty:', error);
+                throw error;
+            }
+        }
+    },
+
     // Messages API
     messages: {
         async getAll() {

@@ -411,15 +411,15 @@ let messages = JSON.parse(localStorage.getItem('messages')) || [];
 
 // Update stats
 async function updateStats() {
-    const events = await AdminAPI.getEvents();
-    const news = await AdminAPI.getNews();
-    const gallery = await AdminAPI.getGallery();
-    const messages = await AdminAPI.getMessages();
+    const eventsData = await AdminAPI.getEvents();
+    const newsData = await AdminAPI.getNews();
+    const galleryData = await AdminAPI.getGallery();
+    const messagesData = await AdminAPI.getMessages();
     
-    document.getElementById('totalEvents').textContent = events.length;
-    document.getElementById('totalNews').textContent = news.length;
-    document.getElementById('totalGallery').textContent = gallery.length;
-    document.getElementById('totalMessages').textContent = messages.length;
+    document.getElementById('totalEvents').textContent = eventsData.length;
+    document.getElementById('totalNews').textContent = newsData.length;
+    document.getElementById('totalGallery').textContent = galleryData.length;
+    document.getElementById('totalMessages').textContent = messagesData.length;
 }
 
 // Save all data to localStorage
@@ -820,10 +820,11 @@ document.getElementById('editProfileForm').addEventListener('submit', function (
 });
 
 // Render Faculty
-function renderFaculty() {
+async function renderFaculty() {
     const grid = document.getElementById('facultyGrid');
+    const facultyData = await AdminAPI.getFaculty();
 
-    if (faculty.length === 0) {
+    if (facultyData.length === 0) {
         grid.innerHTML = `
             <p style="text-align: center; color: #94a3b8; padding: 2rem; grid-column: 1/-1;">
                 No faculty members added yet. Click "Add Faculty" to get started.
@@ -832,7 +833,7 @@ function renderFaculty() {
         return;
     }
 
-    grid.innerHTML = faculty.map(member => `
+    grid.innerHTML = facultyData.map(member => `
         <div class="glass-card">
             <div style="text-align:center;margin-bottom:1rem;">
                 <img src="${member.image || 'images/faculty/default.jpg'}" alt="${member.name}"
@@ -845,10 +846,10 @@ function renderFaculty() {
             ${member.email ? `<p style="text-align:center;font-size:0.8rem;"><i class="fas fa-envelope" style="color:#3b82f6;"></i> ${member.email}</p>` : ''}
             ${member.phone ? `<p style="text-align:center;font-size:0.8rem;"><i class="fas fa-phone" style="color:#10b981;"></i> ${member.phone}</p>` : ''}
             <div style="display:flex;justify-content:center;gap:0.5rem;margin-top:1rem;">
-                <button class="btn-icon" onclick="editFaculty(${member.id})" title="Edit">
+                <button class="btn-icon" onclick="editFaculty('${member._id || member.id}')" title="Edit">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn-icon btn-danger" onclick="deleteFaculty(${member.id})" title="Delete">
+                <button class="btn-icon btn-danger" onclick="deleteFaculty('${member._id || member.id}')" title="Delete">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -892,10 +893,9 @@ function renderPlacements() {
 // Render Gallery
 async function renderGallery() {
     const grid = document.getElementById('galleryGrid');
+    const galleryData = await AdminAPI.getGallery();
 
-    const gallery = await AdminAPI.getGallery();
-
-    if (gallery.length === 0) {
+    if (galleryData.length === 0) {
         grid.innerHTML = `
             <p style="text-align: center; color: #94a3b8; padding: 2rem; grid-column: 1/-1;">
                 No images in gallery yet. Click "Add Image" to get started.
@@ -920,7 +920,7 @@ async function renderGallery() {
         'achievements': 'Achievements & Awards'
     };
 
-    grid.innerHTML = gallery.map(item => `
+    grid.innerHTML = galleryData.map(item => `
         <div class="glass-card" style="padding:0;overflow:hidden;">
             <img src="${item.image}" alt="${item.title}" style="width:100%;height:200px;object-fit:cover;">
             <div style="padding:1rem;">
@@ -945,11 +945,14 @@ async function renderGallery() {
 async function deleteGallery(id) {
     if (confirm('Are you sure you want to delete this gallery item?')) {
         await AdminAPI.deleteGallery(id);
-        renderGallery();
-        updateStats();
+        await renderGallery();
+        await updateStats();
         addActivity('Deleted a gallery item');
     }
 }
+
+// Render News
+function renderNews() {
     const tbody = document.getElementById('newsTableBody');
 
     if (news.length === 0) {
@@ -978,19 +981,14 @@ async function deleteGallery(id) {
             </td>
         </tr>
     `).join('');
+}
 
 // Render Messages
 async function renderMessages() {
     const tbody = document.getElementById('messagesTableBody');
-    const messagesSection = document.getElementById('messages');
+    const messagesData = await AdminAPI.getMessages();
 
-    // Safety check in case elements don't exist
-    if (!tbody) return;
-
-    // Fetch messages from API
-    const messages = await AdminAPI.getMessages();
-
-    if (!messages || messages.length === 0) {
+    if (messagesData.length === 0) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="5" style="text-align: center; padding: 2rem; color: #94a3b8;">
@@ -1001,8 +999,8 @@ async function renderMessages() {
         return;
     }
 
-    tbody.innerHTML = messages.map(msg => `
-        <tr style="${!msg.read && !msg.isRead ? 'background: rgba(59, 130, 246, 0.05); font-weight: 600;' : ''}">
+    tbody.innerHTML = messagesData.map(msg => `
+        <tr style="${!msg.read ? 'background: rgba(59, 130, 246, 0.05); font-weight: 600;' : ''}">
             <td>${msg.name}</td>
             <td><a href="mailto:${msg.email}" style="color: #3b82f6;">${msg.email}</a></td>
             <td>${msg.subject}</td>
@@ -1020,15 +1018,15 @@ async function renderMessages() {
 }
 
 async function viewMessage(id) {
-    const messages = await AdminAPI.getMessages();
-    const msg = messages.find(m => m.id == id || m._id == id);
+    const messagesData = await AdminAPI.getMessages();
+    const msg = messagesData.find(m => (m.id && m.id == id) || (m._id && m._id == id));
     if (!msg) return;
 
     // Mark as read
-    if (!msg.read && !msg.isRead) {
+    if (!msg.read) {
         await AdminAPI.markMessageAsRead(id);
-        renderMessages();
-        updateStats();
+        await renderMessages();
+        await updateStats();
     }
 
     alert(`From: ${msg.name} (${msg.email})\nPhone: ${msg.phone || 'N/A'}\nSubject: ${msg.subject}\nDate: ${new Date(msg.timestamp || msg.date).toLocaleDateString()}\n\nMessage:\n${msg.message}`);
@@ -1037,8 +1035,8 @@ async function viewMessage(id) {
 async function deleteMessage(id) {
     if (confirm('Are you sure you want to delete this message?')) {
         await AdminAPI.deleteMessage(id);
-        renderMessages();
-        updateStats();
+        await renderMessages();
+        await updateStats();
     }
 }
 
@@ -1073,47 +1071,33 @@ function editFaculty(id) {
     document.getElementById('addFacultyModal').classList.add('active');
 }
 
-const addFacultyFormHandler = function (e) {
+const addFacultyFormHandler = async function (e) {
     e.preventDefault();
 
-    if (currentEditingFacultyId) {
-        // Edit mode
-        const member = faculty.find(f => f.id === currentEditingFacultyId);
-        member.name = document.getElementById('facultyName').value;
-        member.designation = document.getElementById('facultyDesignation').value;
-        member.qualification = document.getElementById('facultyQualification').value;
-        member.specialization = document.getElementById('facultySpecialization').value;
-        member.email = document.getElementById('facultyEmail').value;
-        member.phone = document.getElementById('facultyPhone').value;
-        member.image = document.getElementById('facultyImage').value;
+    const facultyData = {
+        name: document.getElementById('facultyName').value,
+        designation: document.getElementById('facultyDesignation').value,
+        qualification: document.getElementById('facultyQualification').value,
+        specialization: document.getElementById('facultySpecialization').value,
+        email: document.getElementById('facultyEmail').value,
+        phone: document.getElementById('facultyPhone').value,
+        image: document.getElementById('facultyImage').value || 'images/faculty/default.jpg'
+    };
 
-        saveData();
-        addActivity('Updated faculty: ' + member.name);
-        alert('Faculty updated successfully!');
+    if (currentEditingFacultyId) {
+        // Edit mode - for now just add as new
+        alert('Edit feature coming soon! Please delete and add new faculty.');
         currentEditingFacultyId = null;
     } else {
         // Add mode
-        const facultyMember = {
-            id: Date.now(),
-            name: document.getElementById('facultyName').value,
-            designation: document.getElementById('facultyDesignation').value,
-            qualification: document.getElementById('facultyQualification').value,
-            specialization: document.getElementById('facultySpecialization').value,
-            email: document.getElementById('facultyEmail').value,
-            phone: document.getElementById('facultyPhone').value,
-            image: document.getElementById('facultyImage').value || 'images/faculty/default.jpg',
-            createdAt: new Date().toISOString()
-        };
-
-        faculty.push(facultyMember);
-        saveData();
-        addActivity('Added new faculty member: ' + facultyMember.name);
+        await AdminAPI.addFaculty(facultyData);
+        addActivity('Added new faculty member: ' + facultyData.name);
         alert('Faculty member added successfully!');
     }
 
     this.reset();
     closeModal('addFacultyModal');
-    renderFaculty();
+    await renderFaculty();
 };
 
 // Add Faculty Form
@@ -1169,7 +1153,7 @@ document.getElementById('addGalleryForm').addEventListener('submit', async funct
     };
 
     if (currentEditingGalleryId) {
-        // Edit mode - for now just add as new (update not implemented in backend yet)
+        // Edit mode - for now just add as new
         alert('Edit feature coming soon! Please delete and add new image.');
         currentEditingGalleryId = null;
     } else {
@@ -1181,8 +1165,8 @@ document.getElementById('addGalleryForm').addEventListener('submit', async funct
 
     this.reset();
     closeModal('addGalleryModal');
-    renderGallery();
-    updateStats();
+    await renderGallery();
+    await updateStats();
 });
 
 // Add News Form
@@ -1227,11 +1211,10 @@ document.getElementById('addNewsForm').addEventListener('submit', function (e) {
 });
 
 // Delete Functions
-function deleteFaculty(id) {
+async function deleteFaculty(id) {
     if (confirm('Are you sure you want to delete this faculty member?')) {
-        faculty = faculty.filter(member => member.id !== id);
-        saveData();
-        renderFaculty();
+        await AdminAPI.deleteFaculty(id);
+        await renderFaculty();
         addActivity('Deleted a faculty member');
     }
 }
@@ -1245,16 +1228,6 @@ function deletePlacement(id) {
     }
 }
 
-function deleteGallery(id) {
-    if (confirm('Are you sure you want to delete this gallery item?')) {
-        gallery = gallery.filter(item => item.id !== id);
-        saveData();
-        renderGallery();
-        updateStats();
-        addActivity('Deleted a gallery item');
-    }
-}
-
 function deleteNews(id) {
     if (confirm('Are you sure you want to delete this news item?')) {
         const item = news.find(n => n.id === id);
@@ -1265,8 +1238,6 @@ function deleteNews(id) {
         addActivity('Deleted news: ' + (item ? item.title : 'Unknown'));
     }
 }
-
-// Delete Functions
 
 function editPlacement(id) {
     const placement = placements.find(p => p.id === id);
@@ -1348,14 +1319,15 @@ async function initDashboard() {
     // Load and render all data
     await updateStats();
     renderEvents();
-    renderFaculty();
+    await renderFaculty();
     renderPlacements();
-    renderGallery();
+    await renderGallery();
     renderNews();
-    renderMessages();
+    await renderMessages();
     
     console.log('Admin Dashboard Loaded');
-    console.log('API Status:', AdminAPI.isAPIAvailable ? 'Connected' : 'Using localStorage');
+    console.log('API Status:', AdminAPI.isAPIAvailable ? 'Connected to MongoDB' : 'Using localStorage');
+    console.log('Developer: Bhupesh Indurkar');
 }
 
 // Start initialization
