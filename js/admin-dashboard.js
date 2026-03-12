@@ -410,7 +410,12 @@ let news = JSON.parse(localStorage.getItem('news')) || [
 let messages = JSON.parse(localStorage.getItem('messages')) || [];
 
 // Update stats
-function updateStats() {
+async function updateStats() {
+    const events = await AdminAPI.getEvents();
+    const news = await AdminAPI.getNews();
+    const gallery = await AdminAPI.getGallery();
+    const messages = await AdminAPI.getMessages();
+    
     document.getElementById('totalEvents').textContent = events.length;
     document.getElementById('totalNews').textContent = news.length;
     document.getElementById('totalGallery').textContent = gallery.length;
@@ -885,8 +890,10 @@ function renderPlacements() {
 }
 
 // Render Gallery
-function renderGallery() {
+async function renderGallery() {
     const grid = document.getElementById('galleryGrid');
+
+    const gallery = await AdminAPI.getGallery();
 
     if (gallery.length === 0) {
         grid.innerHTML = `
@@ -923,10 +930,10 @@ function renderGallery() {
                 </span>
                 <p style="color:#94a3b8;font-size:0.8rem;margin-bottom:1rem;margin-top:0.5rem;">${new Date(item.date).toLocaleDateString()}</p>
                 <div style="display:flex;justify-content:center;gap:0.5rem;">
-                    <button class="btn-icon" onclick="editGallery(${item.id})" title="Edit">
+                    <button class="btn-icon" onclick="editGallery('${item._id || item.id}')" title="Edit">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn-icon btn-danger" onclick="deleteGallery(${item.id})" title="Delete">
+                    <button class="btn-icon btn-danger" onclick="deleteGallery('${item._id || item.id}')" title="Delete">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -935,46 +942,14 @@ function renderGallery() {
     `).join('');
 }
 
-// Debug Gallery Data
-function checkGalleryData() {
-    const gallery = JSON.parse(localStorage.getItem('gallery')) || [];
-    
-    let report = '=== GALLERY DEBUG REPORT ===\n\n';
-    report += `Total Images: ${gallery.length}\n\n`;
-    
-    // Category breakdown
-    const categoryCount = {};
-    gallery.forEach(item => {
-        const cat = item.category || 'undefined';
-        categoryCount[cat] = (categoryCount[cat] || 0) + 1;
-    });
-    
-    report += 'CATEGORIES:\n';
-    Object.keys(categoryCount).forEach(cat => {
-        report += `  ${cat}: ${categoryCount[cat]} images\n`;
-    });
-    
-    // Industrial visits specific
-    const industrialVisits = gallery.filter(item => item.category === 'industrial-visits');
-    report += `\nINDUSTRIAL VISITS: ${industrialVisits.length} images\n`;
-    if (industrialVisits.length > 0) {
-        industrialVisits.forEach((item, i) => {
-            report += `  ${i+1}. ${item.title}\n`;
-        });
+async function deleteGallery(id) {
+    if (confirm('Are you sure you want to delete this gallery item?')) {
+        await AdminAPI.deleteGallery(id);
+        renderGallery();
+        updateStats();
+        addActivity('Deleted a gallery item');
     }
-    
-    // All images
-    report += '\n=== ALL IMAGES ===\n';
-    gallery.forEach((item, i) => {
-        report += `${i+1}. "${item.title}" - Category: "${item.category}"\n`;
-    });
-    
-    console.log(report);
-    alert('Gallery data logged to console! Press F12 to view.\n\nTotal Images: ' + gallery.length + '\nIndustrial Visits: ' + industrialVisits.length);
 }
-
-// Render News
-function renderNews() {
     const tbody = document.getElementById('newsTableBody');
 
     if (news.length === 0) {
@@ -1003,15 +978,17 @@ function renderNews() {
             </td>
         </tr>
     `).join('');
-}
 
 // Render Messages
-function renderMessages() {
+async function renderMessages() {
     const tbody = document.getElementById('messagesTableBody');
     const messagesSection = document.getElementById('messages');
 
     // Safety check in case elements don't exist
     if (!tbody) return;
+
+    // Fetch messages from API
+    const messages = await AdminAPI.getMessages();
 
     if (!messages || messages.length === 0) {
         tbody.innerHTML = `
@@ -1025,16 +1002,16 @@ function renderMessages() {
     }
 
     tbody.innerHTML = messages.map(msg => `
-        <tr style="${!msg.isRead ? 'background: rgba(59, 130, 246, 0.05); font-weight: 600;' : ''}">
+        <tr style="${!msg.read && !msg.isRead ? 'background: rgba(59, 130, 246, 0.05); font-weight: 600;' : ''}">
             <td>${msg.name}</td>
             <td><a href="mailto:${msg.email}" style="color: #3b82f6;">${msg.email}</a></td>
             <td>${msg.subject}</td>
-            <td>${new Date(msg.date).toLocaleDateString()}</td>
+            <td>${new Date(msg.timestamp || msg.date).toLocaleDateString()}</td>
             <td>
-                <button class="btn-icon" onclick="viewMessage('${msg.id}')" title="View Message">
+                <button class="btn-icon" onclick="viewMessage('${msg._id || msg.id}')" title="View Message">
                     <i class="fas fa-eye"></i>
                 </button>
-                <button class="btn-icon btn-danger" onclick="deleteMessage('${msg.id}')" title="Delete">
+                <button class="btn-icon btn-danger" onclick="deleteMessage('${msg._id || msg.id}')" title="Delete">
                     <i class="fas fa-trash"></i>
                 </button>
             </td>
@@ -1042,26 +1019,26 @@ function renderMessages() {
     `).join('');
 }
 
-function viewMessage(id) {
-    const msg = messages.find(m => m.id === id);
+async function viewMessage(id) {
+    const messages = await AdminAPI.getMessages();
+    const msg = messages.find(m => m.id == id || m._id == id);
     if (!msg) return;
 
     // Mark as read
-    if (!msg.isRead) {
-        msg.isRead = true;
-        saveData();
+    if (!msg.read && !msg.isRead) {
+        await AdminAPI.markMessageAsRead(id);
         renderMessages();
+        updateStats();
     }
 
-    alert(`From: ${msg.name} (${msg.email})\nPhone: ${msg.phone || 'N/A'}\nSubject: ${msg.subject}\nDate: ${msg.date}\n\nMessage:\n${msg.message}`);
+    alert(`From: ${msg.name} (${msg.email})\nPhone: ${msg.phone || 'N/A'}\nSubject: ${msg.subject}\nDate: ${new Date(msg.timestamp || msg.date).toLocaleDateString()}\n\nMessage:\n${msg.message}`);
 }
 
-function deleteMessage(id) {
+async function deleteMessage(id) {
     if (confirm('Are you sure you want to delete this message?')) {
-        messages = messages.filter(m => m.id !== id);
-        saveData();
-        updateStats();
+        await AdminAPI.deleteMessage(id);
         renderMessages();
+        updateStats();
     }
 }
 
@@ -1181,42 +1158,31 @@ document.getElementById('addPlacementForm').addEventListener('submit', function 
 });
 
 // Add Gallery Form
-document.getElementById('addGalleryForm').addEventListener('submit', function (e) {
+document.getElementById('addGalleryForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    if (currentEditingGalleryId) {
-        // Edit mode
-        const item = gallery.find(g => g.id === currentEditingGalleryId);
-        item.title = document.getElementById('galleryTitle').value;
-        item.category = document.getElementById('galleryCategory').value;
-        item.image = document.getElementById('galleryImage').value;
-        item.date = document.getElementById('galleryDate').value;
+    const galleryData = {
+        title: document.getElementById('galleryTitle').value,
+        category: document.getElementById('galleryCategory').value,
+        image: document.getElementById('galleryImage').value,
+        date: document.getElementById('galleryDate').value
+    };
 
-        saveData();
-        addActivity('Updated gallery: ' + item.title);
-        alert('Gallery updated successfully!');
+    if (currentEditingGalleryId) {
+        // Edit mode - for now just add as new (update not implemented in backend yet)
+        alert('Edit feature coming soon! Please delete and add new image.');
         currentEditingGalleryId = null;
     } else {
         // Add mode
-        const galleryItem = {
-            id: Date.now(),
-            title: document.getElementById('galleryTitle').value,
-            category: document.getElementById('galleryCategory').value,
-            image: document.getElementById('galleryImage').value,
-            date: document.getElementById('galleryDate').value,
-            createdAt: new Date().toISOString()
-        };
-
-        gallery.push(galleryItem);
-        saveData();
-        updateStats();
-        addActivity('Added new gallery image: ' + galleryItem.title);
+        await AdminAPI.addGallery(galleryData);
+        addActivity('Added new gallery image: ' + galleryData.title);
         alert('Gallery image added successfully!');
     }
 
     this.reset();
     closeModal('addGalleryModal');
     renderGallery();
+    updateStats();
 });
 
 // Add News Form
@@ -1375,13 +1341,25 @@ function editNews(id) {
 }
 
 // Initialize
-updateStats();
-renderEvents();
-renderFaculty();
-renderPlacements();
-renderGallery();
-renderNews();
-renderMessages();
+async function initDashboard() {
+    // Initialize API
+    await AdminAPI.init();
+    
+    // Load and render all data
+    await updateStats();
+    renderEvents();
+    renderFaculty();
+    renderPlacements();
+    renderGallery();
+    renderNews();
+    renderMessages();
+    
+    console.log('Admin Dashboard Loaded');
+    console.log('API Status:', AdminAPI.isAPIAvailable ? 'Connected' : 'Using localStorage');
+}
+
+// Start initialization
+initDashboard();
 
 // Save initial data to localStorage if not exists
 if (!localStorage.getItem('events') || !localStorage.getItem('faculty') ||
