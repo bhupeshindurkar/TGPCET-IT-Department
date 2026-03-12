@@ -2,8 +2,8 @@
 // Developer: Bhupesh Indurkar
 // Connects to Render.com backend
 
-// API Base URL - Update this after Render deployment
-const API_BASE_URL = 'https://tgpcet-it-backend.onrender.com/api';
+// API Base URL - Render deployment
+const API_BASE_URL = 'https://tgpcet-it-department.onrender.com/api';
 
 // API Client
 const API = {
