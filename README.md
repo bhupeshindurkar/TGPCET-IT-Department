@@ -11,53 +11,6 @@
 
 Professional website for the Department of Information Technology, TGPCET Nagpur featuring modern design with glassmorphism effects, smooth animations, and complete responsive layout.
 
-## 📁 Project Structure
-
-```
-tgpcet-it-website/
-├── index.html              # Homepage
-├── academics.html          # Academic Programs
-├── faculty.html            # Faculty Directory (11 members)
-├── infrastructure.html     # Labs & Facilities (9 labs)
-├── research.html           # Research Activities
-├── placements.html         # Placement Records (40+ students)
-├── students.html           # Student Corner
-├── contact.html            # Contact Information
-├── css/
-│   └── main.css           # Main stylesheet with glassmorphism
-├── js/
-│   └── main.js            # JavaScript functionality
-├── images/
-│   ├── faculty/           # Faculty photos
-│   ├── labs/              # Lab images
-│   ├── placements/        # Placement photos
-│   ├── events/            # Event photos
-│   └── college-logo/      # TGPCET logo & favicon
-└── assets/
-    └── documents/         # PDFs and documents
-```
-
-## ✨ Features
-
-- ✅ Modern Glassmorphism Design
-- ✅ Smooth Scroll Animations
-- ✅ Responsive Layout (Mobile, Tablet, Desktop)
-- ✅ Interactive Counter Animations
-- ✅ **Top Sliding Banner** with College Info
-- ✅ **IT Assistant Chatbot** with AI-like responses
-- ✅ **Time-based Greetings** (Morning/Afternoon/Evening/Night)
-- ✅ **Career Guidance** for 8 IT Domains
-- ✅ **Developer Info Integration** in Chatbot & Footer
-- ✅ Faculty Directory with 11 Members
-- ✅ 9 Advanced Labs Showcase
-- ✅ Placement Records Display
-- ✅ **Admin Dashboard** for Content Management
-- ✅ Contact Form with FormSubmit Integration
-- ✅ **Gallery with Category Filtering**
-- ✅ NBA & NAAC A+ Accreditation Badges
-- ✅ **TGPCET Logo Favicon** on all pages
-- ✅ Back to Top Button
-- ✅ Active Navigation Highlighting
 
 ## 🎨 Design Elements
 
