@@ -242,42 +242,54 @@
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
                 submitBtn.disabled = true;
 
+                const name = contactForm.querySelector('[name="name"]').value;
+                const email = contactForm.querySelector('[name="email"]').value;
+                const phone = contactForm.querySelector('[name="phone"]').value || 'N/A';
+                const subject = contactForm.querySelector('[name="subject"]').value;
+                const message = contactForm.querySelector('[name="message"]').value;
+
                 const messageData = {
-                    name: contactForm.querySelector('[name="name"]').value,
-                    email: contactForm.querySelector('[name="email"]').value,
-                    phone: contactForm.querySelector('[name="phone"]').value || 'N/A',
-                    subject: contactForm.querySelector('[name="subject"]').value,
-                    message: contactForm.querySelector('[name="message"]').value,
+                    name, email, phone, subject, message,
                     timestamp: new Date().toISOString(),
                     read: false
                 };
 
-                // Save to MongoDB
+                // Step 1: Save to MongoDB
+                let savedToMongo = false;
                 try {
-                    await fetch('https://tgpcet-it-department.onrender.com/api/messages', {
+                    const res = await fetch('https://tgpcet-it-department.onrender.com/api/messages', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(messageData)
                     });
-                    console.log('✅ Message saved to MongoDB');
+                    const data = await res.json();
+                    if (data._id) {
+                        savedToMongo = true;
+                        console.log('✅ Saved to MongoDB:', data._id);
+                    }
                 } catch (err) {
-                    console.warn('API error:', err);
+                    console.warn('MongoDB error:', err);
                 }
 
-                // Send email via FormSubmit using fetch
+                // Step 2: Send email via FormSubmit AJAX
                 try {
-                    const formData = new FormData(contactForm);
                     await fetch('https://formsubmit.co/ajax/bhupeshindurkar6@gmail.com', {
                         method: 'POST',
-                        headers: { 'Accept': 'application/json' },
-                        body: formData
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name, email, phone, subject, message,
+                            _subject: 'New Message - TGPCET IT Department'
+                        })
                     });
-                    console.log('✅ Email sent via FormSubmit');
+                    console.log('✅ Email sent');
                 } catch (err) {
-                    console.warn('FormSubmit error:', err);
+                    console.warn('Email error:', err);
                 }
 
-                // Redirect to thank you page
+                // Redirect
                 window.location.href = 'thank-you.html';
             });
         }
