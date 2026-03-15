@@ -213,6 +213,20 @@ const API = {
                 console.error('Error deleting faculty:', error);
                 throw error;
             }
+        },
+
+        async update(id, facultyData) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/faculty/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(facultyData)
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('Error updating faculty:', error);
+                throw error;
+            }
         }
     },
 

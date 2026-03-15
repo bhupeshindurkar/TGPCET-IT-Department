@@ -233,40 +233,40 @@
     <script src="js/main.js"></script>
     <script src="js/contact-form.js"></script>
     <script>
-        const contactForm = document.getElementById('contactForm');
-        if (contactForm) {
-            contactForm.addEventListener('submit', async function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contactForm');
+            if (!form) return;
+
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const submitBtn = form.querySelector('button[type="submit"]');
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
                 submitBtn.disabled = true;
 
-                const name = contactForm.querySelector('[name="name"]').value;
-                const email = contactForm.querySelector('[name="email"]').value;
-                const phone = contactForm.querySelector('[name="phone"]').value || 'N/A';
-                const subject = contactForm.querySelector('[name="subject"]').value;
-                const message = contactForm.querySelector('[name="message"]').value;
+                const name = form.querySelector('[name="name"]').value.trim();
+                const email = form.querySelector('[name="email"]').value.trim();
+                const phone = form.querySelector('[name="phone"]').value.trim() || 'N/A';
+                const subject = form.querySelector('[name="subject"]').value.trim();
+                const message = form.querySelector('[name="message"]').value.trim();
 
-                const messageData = {
-                    name, email, phone, subject, message,
-                    timestamp: new Date().toISOString(),
-                    read: false
-                };
+                // Validation
+                if (!name || !email || !message) {
+                    alert('Please fill in all required fields.');
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                    submitBtn.disabled = false;
+                    return;
+                }
 
                 // Step 1: Save to MongoDB
-                let savedToMongo = false;
                 try {
                     const res = await fetch('https://tgpcet-it-department.onrender.com/api/messages', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(messageData)
+                        body: JSON.stringify({ name, email, phone, subject, message, timestamp: new Date().toISOString(), read: false })
                     });
                     const data = await res.json();
-                    if (data._id) {
-                        savedToMongo = true;
-                        console.log('✅ Saved to MongoDB:', data._id);
-                    }
+                    console.log('✅ Saved to MongoDB:', data._id);
                 } catch (err) {
                     console.warn('MongoDB error:', err);
                 }
@@ -275,14 +275,8 @@
                 try {
                     await fetch('https://formsubmit.co/ajax/bhupeshindurkar6@gmail.com', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            name, email, phone, subject, message,
-                            _subject: 'New Message - TGPCET IT Department'
-                        })
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ name, email, phone, subject, message, _subject: 'New Message - TGPCET IT Department' })
                     });
                     console.log('✅ Email sent');
                 } catch (err) {
@@ -292,7 +286,7 @@
                 // Redirect
                 window.location.href = 'thank-you.html';
             });
-        }
+        });
     </script>
 </body>
 

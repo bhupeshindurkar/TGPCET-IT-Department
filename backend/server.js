@@ -258,6 +258,15 @@ app.delete('/api/faculty/:id', async (req, res) => {
     }
 });
 
+app.put('/api/faculty/:id', async (req, res) => {
+    try {
+        const updated = await Faculty.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updated);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Messages Routes
 app.get('/api/messages', async (req, res) => {
     try {

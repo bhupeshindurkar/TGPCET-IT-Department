@@ -1079,8 +1079,9 @@ async function deleteMessage(id) {
 }
 
 // Edit Faculty
-function editFaculty(id) {
-    const member = faculty.find(f => f.id === id);
+async function editFaculty(id) {
+    const facultyData = await AdminAPI.getFaculty();
+    const member = facultyData.find(f => (f._id && f._id == id) || (f.id && f.id == id));
     if (!member) return;
 
     currentEditingFacultyId = id;
@@ -1088,11 +1089,11 @@ function editFaculty(id) {
     // Fill form
     document.getElementById('facultyName').value = member.name;
     document.getElementById('facultyDesignation').value = member.designation;
-    document.getElementById('facultyQualification').value = member.qualification;
-    document.getElementById('facultySpecialization').value = member.specialization;
+    document.getElementById('facultyQualification').value = member.qualification || '';
+    document.getElementById('facultySpecialization').value = member.specialization || '';
     document.getElementById('facultyEmail').value = member.email || '';
     document.getElementById('facultyPhone').value = member.phone || '';
-    document.getElementById('facultyImage').value = member.image;
+    document.getElementById('facultyImage').value = member.image || '';
 
     // Show existing image preview
     if (member.image) {
@@ -1123,8 +1124,14 @@ const addFacultyFormHandler = async function (e) {
     };
 
     if (currentEditingFacultyId) {
-        // Edit mode - for now just add as new
-        alert('Edit feature coming soon! Please delete and add new faculty.');
+        // Edit mode - PUT request to MongoDB
+        try {
+            await API.faculty.update(currentEditingFacultyId, facultyData);
+            addActivity('Updated faculty member: ' + facultyData.name);
+            alert('Faculty member updated successfully!');
+        } catch(err) {
+            alert('Error updating faculty. Please try again.');
+        }
         currentEditingFacultyId = null;
     } else {
         // Add mode

@@ -78,7 +78,7 @@ const AdminAPI = {
         if (this.isAPIAvailable) {
             try {
                 const data = await API.messages.getAll();
-                if (data && data.length > 0) {
+                if (data && Array.isArray(data)) {
                     localStorage.setItem('messages', JSON.stringify(data));
                     return data;
                 }
