@@ -234,56 +234,38 @@
     <script src="js/api-client.js"></script>
     <script src="js/contact-form.js"></script>
     <script>
-        // Save contact form messages to MongoDB API and localStorage
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
             contactForm.addEventListener('submit', async function(e) {
-                // Don't prevent default - let FormSubmit handle email submission
-                
-                try {
-                    const formData = new FormData(contactForm);
-                    const messageData = {
-                        name: formData.get('name') || 'Unknown User',
-                        email: formData.get('email') || 'No Email',
-                        phone: formData.get('phone') || 'N/A',
-                        subject: formData.get('subject') || 'General Inquiry',
-                        message: formData.get('message') || '',
-                        timestamp: new Date().toISOString(),
-                        read: false
-                    };
+                e.preventDefault(); // Stop default submission
 
-                    // Save to MongoDB API (if available)
-                    if (window.API && window.API.messages) {
-                        try {
-                            await API.messages.add(messageData);
-                            console.log('✅ Message saved to MongoDB');
-                        } catch (apiError) {
-                            console.warn('⚠️ API not available, saving to localStorage');
-                            // Fallback to localStorage
-                            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-                            messages.unshift({
-                                id: Date.now().toString(),
-                                ...messageData,
-                                date: new Date().toISOString().split('T')[0],
-                                isRead: false
-                            });
-                            localStorage.setItem('messages', JSON.stringify(messages));
-                        }
-                    } else {
-                        // Fallback to localStorage if API not loaded
-                        const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-                        messages.unshift({
-                            id: Date.now().toString(),
-                            ...messageData,
-                            date: new Date().toISOString().split('T')[0],
-                            isRead: false
-                        });
-                        localStorage.setItem('messages', JSON.stringify(messages));
-                        console.log('✅ Message saved to localStorage');
-                    }
+                const messageData = {
+                    name: contactForm.querySelector('[name="name"]').value,
+                    email: contactForm.querySelector('[name="email"]').value,
+                    phone: contactForm.querySelector('[name="phone"]').value || 'N/A',
+                    subject: contactForm.querySelector('[name="subject"]').value,
+                    message: contactForm.querySelector('[name="message"]').value,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                };
+
+                // Save to MongoDB
+                try {
+                    await fetch('https://tgpcet-it-department.onrender.com/api/messages', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(messageData)
+                    });
+                    console.log('✅ Message saved to MongoDB');
                 } catch (err) {
-                    console.error('❌ Error saving message:', err);
+                    console.warn('API error, saving to localStorage');
+                    const msgs = JSON.parse(localStorage.getItem('messages') || '[]');
+                    msgs.unshift({ id: Date.now(), ...messageData });
+                    localStorage.setItem('messages', JSON.stringify(msgs));
                 }
+
+                // Now submit to FormSubmit for email
+                contactForm.submit();
             });
         }
     </script>
