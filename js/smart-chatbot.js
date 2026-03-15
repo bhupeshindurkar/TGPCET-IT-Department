@@ -49,6 +49,25 @@ function getSmartBotResponse(message) {
                    '🎓 We have AI/ML Lab! <a href="infrastructure.html" style="color:#60a5fa;">View</a>'
         },
         
+        // TECH-XION 2.0 Event
+        techxion: {
+            keywords: ['techxion', 'tech-xion', 'tech xion', 'event', 'hackathon', 'hack arena', 'bgmi', 'free fire', 'battle royale', 'cipher chase', 'idea canvas', 'powerplay', 'box cricket', 'national event', 'register', 'registration', '27 march', '28 march', 'march 2026', 'technical event'],
+            response: () => '🎉 <strong>TECH-XION 2.0 2K26</strong><br><br>' +
+                   '🏆 <strong>National Level Technical Event</strong><br>' +
+                   'Organized by IT Department, TGPCET Nagpur<br><br>' +
+                   '📅 <strong>Dates:</strong> 27 & 28 March 2026<br>' +
+                   '📍 <strong>Venue:</strong> TGPCET, Nagpur<br><br>' +
+                   '🗓️ <strong>Day 1 (27 March):</strong><br>' +
+                   '⚡ Hack Arena - 9 Hrs Hackathon<br>' +
+                   '🏏 Power-Play - Box Cricket<br>' +
+                   '🎮 Battle Royale - BGMI & Free Fire<br><br>' +
+                   '🗓️ <strong>Day 2 (28 March):</strong><br>' +
+                   '🔐 Cipher Chase - Escape Room<br>' +
+                   '🎨 Idea Canvas - Poster Presentation<br><br>' +
+                   '👨‍🏫 <strong>Faculty Coordinator:</strong> Prof. Jayesh Fating | 📞 9763643881<br><br>' +
+                   '🔗 <strong>Register:</strong> <a href="https://informationtechnology-tgpcet.vercel.app/#/events" target="_blank" style="color:#3b82f6;">Click Here to Register</a>'
+        },
+
         // General questions
         help: {
             keywords: ['help', 'assist', 'support', 'guide', 'confused', 'dont know', 'what can'],
