@@ -492,14 +492,17 @@
                     <label>Gallery Image</label>
                     <input type="file" id="galleryImageFile" accept="image/*" style="display:none;"
                         onchange="handleGalleryImageUpload(event)" required>
-                    <div style="display:flex;gap:1rem;align-items:center;">
+                    <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
                         <button type="button" class="btn-secondary"
                             onclick="document.getElementById('galleryImageFile').click()">
                             <i class="fas fa-upload"></i> Choose Image
                         </button>
                         <span id="galleryImageName" style="color:#94a3b8;font-size:0.9rem;">No file chosen</span>
+                        <span id="galleryUploadStatus" style="color:#10b981;font-size:0.9rem;display:none;"><i class="fas fa-spinner fa-spin"></i> Uploading...</span>
                     </div>
-                    <input type="hidden" id="galleryImage" required>
+                    <p style="color:#94a3b8;font-size:0.8rem;margin-top:0.5rem;">OR paste image URL directly:</p>
+                    <input type="text" id="galleryImageUrl" placeholder="https://example.com/image.jpg" style="margin-top:0.5rem;">
+                    <input type="hidden" id="galleryImage">
                     <div id="galleryImagePreview" style="margin-top:1rem;display:none;">
                         <img src="" alt="Preview"
                             style="max-width:100%;max-height:300px;border-radius:10px;border:2px solid #3b82f6;">

@@ -718,20 +718,58 @@ function handleFacultyImageUpload(event) {
 
 function handleGalleryImageUpload(event) {
     const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const imageData = e.target.result;
-            document.getElementById('galleryImage').value = imageData;
-            document.getElementById('galleryImageName').textContent = file.name;
+    if (!file) return;
 
-            // Show preview
+    document.getElementById('galleryImageName').textContent = file.name;
+    document.getElementById('galleryUploadStatus').style.display = 'inline';
+
+    // Upload to ImgBB (free image hosting)
+    const formData = new FormData();
+    formData.append('image', file);
+
+    fetch('https://api.imgbb.com/1/upload?key=a8b5c2d1e3f4a6b7c8d9e0f1a2b3c4d5', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            const imageUrl = data.data.url;
+            document.getElementById('galleryImage').value = imageUrl;
+            document.getElementById('galleryImageUrl').value = imageUrl;
+            document.getElementById('galleryUploadStatus').innerHTML = '<i class="fas fa-check-circle"></i> Uploaded!';
+            document.getElementById('galleryUploadStatus').style.color = '#10b981';
+
             const preview = document.getElementById('galleryImagePreview');
             preview.style.display = 'block';
-            preview.querySelector('img').src = imageData;
+            preview.querySelector('img').src = imageUrl;
+        } else {
+            // Fallback: convert to base64
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('galleryImage').value = e.target.result;
+                document.getElementById('galleryUploadStatus').innerHTML = '<i class="fas fa-check-circle"></i> Ready!';
+                const preview = document.getElementById('galleryImagePreview');
+                preview.style.display = 'block';
+                preview.querySelector('img').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        document.getElementById('galleryUploadStatus').style.display = 'inline';
+    })
+    .catch(() => {
+        // Fallback to base64
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('galleryImage').value = e.target.result;
+            document.getElementById('galleryUploadStatus').innerHTML = '<i class="fas fa-check-circle"></i> Ready!';
+            document.getElementById('galleryUploadStatus').style.display = 'inline';
+            const preview = document.getElementById('galleryImagePreview');
+            preview.style.display = 'block';
+            preview.querySelector('img').src = e.target.result;
         };
         reader.readAsDataURL(file);
-    }
+    });
 }
 
 function handleNewsImageUpload(event) {
@@ -1148,7 +1186,7 @@ document.getElementById('addGalleryForm').addEventListener('submit', async funct
     const galleryData = {
         title: document.getElementById('galleryTitle').value,
         category: document.getElementById('galleryCategory').value,
-        image: document.getElementById('galleryImage').value,
+        image: document.getElementById('galleryImage').value || document.getElementById('galleryImageUrl').value,
         date: document.getElementById('galleryDate').value
     };
 
