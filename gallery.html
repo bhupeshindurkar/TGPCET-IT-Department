@@ -250,11 +250,148 @@
     <!-- JavaScript -->
     <script src="js/main.js"></script>
     <script>
-        // Global variable to track gallery
+        const API_URL = 'https://tgpcet-it-department.onrender.com/api';
         let galleryData = [];
-        
-        // Check if gallery data exists, if not initialize with default
-        if (!localStorage.getItem('gallery')) {
+
+        const defaultGallery = [
+            { title: "Farwell Celebration 2K25", category: "farewell", image: "https://www.tgpcet.com/assets/img/IT/38.jpg", date: "2025-01-15" },
+            { title: "Farwell Celebration 2K25", category: "farewell", image: "https://www.tgpcet.com/assets/img/IT/37.jpg", date: "2025-01-15" },
+            { title: "Farwell Celebration", category: "farewell", image: "https://www.tgpcet.com/assets/img/IT/36.jpg", date: "2024-05-15" },
+            { title: "Farwell Celebration", category: "farewell", image: "https://www.tgpcet.com/assets/img/IT/29.jpeg", date: "2024-04-24" },
+            { title: "Convocation Ceremony- Graduating Class of 2023", category: "farewell", image: "https://www.tgpcet.com/assets/img/IT/20.png", date: "2024-01-13" },
+            { title: "Forum Reinstallation of ACME", category: "events", image: "https://www.tgpcet.com/assets/img/IT/35.png", date: "2024-08-14" },
+            { title: "10th International conference on IKSAT-2K24", category: "events", image: "https://www.tgpcet.com/assets/img/IT/19.png", date: "2024-01-10" },
+            { title: "Parents Teacher Conclave", category: "events", image: "https://www.tgpcet.com/assets/img/IT/17.png", date: "2023-11-25" },
+            { title: "Guest Lecture on AI and its usage in modern world", category: "guest-lectures", image: "https://www.tgpcet.com/assets/img/IT/34.png", date: "2024-08-02" },
+            { title: "Guest Lecture on Design Thinking", category: "guest-lectures", image: "https://www.tgpcet.com/assets/img/IT/22.png", date: "2024-02-02" },
+            { title: "Guest lecture on Carriers on Salesforce", category: "guest-lectures", image: "https://www.tgpcet.com/assets/img/IT/13.jpeg", date: "2023-05-22" },
+            { title: "Industrial visit at Clic2Cloud, Nagpur", category: "industrial-visits", image: "https://www.tgpcet.com/assets/img/IT/33.png", date: "2024-07-24" },
+            { title: "Industrial visit at Metlok Pvt. Ltd – Nagpur", category: "industrial-visits", image: "https://www.tgpcet.com/assets/img/IT/21.png", date: "2024-02-01" },
+            { title: "Industrial Visit to Royals Webtech", category: "industrial-visits", image: "https://www.tgpcet.com/assets/img/IT/14.jpeg", date: "2023-07-28" },
+            { title: "Hands-on Workshop Industrial Code Design Pattern", category: "workshops", image: "https://www.tgpcet.com/assets/img/IT/28.png", date: "2024-05-03" },
+            { title: "One Day Workshop on Career in Salesforce & cloud computing", category: "workshops", image: "https://www.tgpcet.com/assets/img/IT/26.png", date: "2024-02-24" },
+            { title: "Two days hand on workshop on DBA", category: "workshops", image: "https://www.tgpcet.com/assets/img/IT/15.jpeg", date: "2023-07-22" },
+            { title: "Project Competition and Model Making", category: "competitions", image: "https://www.tgpcet.com/assets/img/IT/25.png", date: "2024-02-17" },
+            { title: "Gandhi Jayanti Celebration", category: "celebrations", image: "https://www.tgpcet.com/assets/img/IT/18.png", date: "2023-10-02" },
+            { title: "Artificial Intelligence and Machine Learning Lab", category: "labs", image: "https://www.tgpcet.com/assets/img/IT/LAB/AIML.jpg", date: "2024-01-01" },
+            { title: "Computer Graphics Lab", category: "labs", image: "https://www.tgpcet.com/assets/img/IT/LAB/Computer_Graphics.jpg", date: "2024-01-01" },
+            { title: "Data Science Lab", category: "labs", image: "https://www.tgpcet.com/assets/img/IT/LAB/Data_Science.jpg", date: "2024-01-01" },
+            { title: "Database Management System Lab", category: "labs", image: "https://www.tgpcet.com/assets/img/IT/LAB/DBMS.jpg", date: "2024-01-01" },
+            { title: "Research Lab", category: "labs", image: "https://www.tgpcet.com/assets/img/IT/LAB/Research_Lab.jpg", date: "2024-01-01" },
+            { title: "Software Engineering Lab", category: "labs", image: "https://www.tgpcet.com/assets/img/IT/LAB/Software_Engineering.jpg", date: "2024-01-01" },
+            { title: "Department Achievement News", category: "news", image: "https://www.tgpcet.com/assets/img/IT/News/1.jpg", date: "2024-01-01" },
+            { title: "Student Achievement News", category: "news", image: "https://www.tgpcet.com/assets/img/IT/News/3.jpg", date: "2024-01-01" },
+            { title: "Faculty Achievement News", category: "news", image: "https://www.tgpcet.com/assets/img/IT/News/4.jpg", date: "2024-01-01" },
+            { title: "Department Event News", category: "news", image: "https://www.tgpcet.com/assets/img/IT/News/5.jpg", date: "2024-01-01" }
+        ];
+
+        const categoryNames = {
+            'events': 'Events & Activities',
+            'workshops': 'Workshops & Seminars',
+            'industrial-visits': 'Industrial Visits',
+            'guest-lectures': 'Guest Lectures',
+            'competitions': 'Competitions & Hackathons',
+            'celebrations': 'Celebrations & Festivals',
+            'farewell': 'Farewell & Convocation',
+            'sports': 'Sports & Cultural',
+            'labs': 'Laboratories',
+            'infrastructure': 'Infrastructure',
+            'news': 'News & Media',
+            'achievements': 'Achievements & Awards'
+        };
+
+        function renderGallery(gallery) {
+            galleryData = gallery;
+            const grid = document.getElementById('galleryGrid');
+
+            if (gallery.length === 0) {
+                grid.innerHTML = `<p style="text-align:center;color:#94a3b8;padding:2rem;grid-column:1/-1;">No images found.</p>`;
+                return;
+            }
+
+            grid.innerHTML = gallery.map(item => {
+                const categoryClass = item.category ? item.category.toLowerCase().trim() : 'uncategorized';
+                return `
+                    <div class="gallery-item ${categoryClass}" data-category="${categoryClass}">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="gallery-overlay">
+                            <h4>${item.title}</h4>
+                            <p>${categoryNames[item.category] || item.category}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            setupFilters();
+        }
+
+        async function loadGallery() {
+            try {
+                const response = await fetch(`${API_URL}/gallery`);
+                const apiGallery = await response.json();
+                if (apiGallery && apiGallery.length > 0) {
+                    renderGallery(apiGallery);
+                    return;
+                }
+            } catch (e) {
+                console.warn('API not available, using default data');
+            }
+            renderGallery(defaultGallery);
+        }
+
+        function setupFilters() {
+            document.querySelectorAll('.gallery-filter').forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.getAttribute('data-filter');
+                    document.querySelectorAll('.gallery-filter').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const items = document.querySelectorAll('.gallery-item');
+                    let visibleCount = 0;
+                    items.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        if (filter === 'all' || itemCategory === filter) {
+                            item.style.display = 'block';
+                            visibleCount++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    const existingMsg = document.querySelector('.no-items-msg');
+                    if (existingMsg) existingMsg.remove();
+                    if (visibleCount === 0 && filter !== 'all') {
+                        const grid = document.getElementById('galleryGrid');
+                        const msg = document.createElement('div');
+                        msg.className = 'no-items-msg';
+                        msg.style.cssText = 'grid-column:1/-1;text-align:center;color:#94a3b8;padding:2rem;';
+                        msg.innerHTML = `<i class="fas fa-info-circle"></i> No images in this category.`;
+                        grid.appendChild(msg);
+                    }
+                });
+            });
+        }
+
+        function forceReloadGallery() {
+            const btn = event.target.closest('button');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reloading...';
+            btn.disabled = true;
+            loadGallery().then(() => {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                const msg = document.createElement('div');
+                msg.style.cssText = 'position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:1rem 2rem;border-radius:10px;z-index:9999;';
+                msg.innerHTML = '<i class="fas fa-check-circle"></i> Gallery reloaded!';
+                document.body.appendChild(msg);
+                setTimeout(() => msg.remove(), 3000);
+            });
+        }
+
+        loadGallery();
+    </script>
+</body>
+</html>
             // Initialize with sample data matching admin dashboard
             const defaultGallery = [
                 // Farewell & Convocation
