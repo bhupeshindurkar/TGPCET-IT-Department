@@ -1441,6 +1441,7 @@ function showAddAnnouncementModal() {
     document.getElementById('annImageStatus').textContent = 'No file chosen';
     document.getElementById('annImageStatus').style.color = '#94a3b8';
     document.getElementById('annImagePreview').style.display = 'none';
+    document.getElementById('annLink').value = '';
     document.getElementById('addAnnouncementModal').classList.add('active');
 }
 
@@ -1499,6 +1500,7 @@ document.getElementById('addAnnouncementForm').addEventListener('submit', async 
         title: document.getElementById('annTitle').value,
         message: document.getElementById('annMessage').value,
         image: document.getElementById('annImage').value.trim() || '',
+        link: document.getElementById('annLink').value.trim() || '',
         type: document.getElementById('annType').value,
         active: true
     };

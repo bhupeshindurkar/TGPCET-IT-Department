@@ -89,6 +89,7 @@ const announcementSchema = new mongoose.Schema({
     title: String,
     message: String,
     image: String,
+    link: String,
     type: { type: String, default: 'info' },
     active: { type: Boolean, default: true },
     timestamp: { type: Date, default: Date.now }
