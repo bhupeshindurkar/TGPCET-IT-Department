@@ -279,8 +279,7 @@ const API = {
                 throw error;
             }
         }
-    }
-};
+    },
 
     // Announcements API
     announcements: {
