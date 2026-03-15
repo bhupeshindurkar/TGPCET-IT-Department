@@ -1383,8 +1383,64 @@ async function initDashboard() {
 }
 
 // ===== ANNOUNCEMENTS =====
+function handleAnnImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    document.getElementById('annImageStatus').textContent = 'Uploading...';
+    document.getElementById('annImageStatus').style.color = '#f59e0b';
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    fetch('https://api.imgbb.com/1/upload?key=a8b5c2d1e3f4a6b7c8d9e0f1a2b3c4d5', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('annImage').value = data.data.url;
+            document.getElementById('annImageStatus').textContent = '✅ Uploaded!';
+            document.getElementById('annImageStatus').style.color = '#10b981';
+            const preview = document.getElementById('annImagePreview');
+            preview.style.display = 'block';
+            preview.querySelector('img').src = data.data.url;
+        } else {
+            // Fallback to base64
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('annImage').value = e.target.result;
+                document.getElementById('annImageStatus').textContent = '✅ Ready!';
+                document.getElementById('annImageStatus').style.color = '#10b981';
+                const preview = document.getElementById('annImagePreview');
+                preview.style.display = 'block';
+                preview.querySelector('img').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    })
+    .catch(() => {
+        // Fallback to base64
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('annImage').value = e.target.result;
+            document.getElementById('annImageStatus').textContent = '✅ Ready!';
+            document.getElementById('annImageStatus').style.color = '#10b981';
+            const preview = document.getElementById('annImagePreview');
+            preview.style.display = 'block';
+            preview.querySelector('img').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
 function showAddAnnouncementModal() {
     document.getElementById('addAnnouncementForm').reset();
+    document.getElementById('annImage').value = '';
+    document.getElementById('annImageStatus').textContent = 'No file chosen';
+    document.getElementById('annImageStatus').style.color = '#94a3b8';
+    document.getElementById('annImagePreview').style.display = 'none';
     document.getElementById('addAnnouncementModal').classList.add('active');
 }
 
