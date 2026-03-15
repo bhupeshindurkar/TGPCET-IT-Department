@@ -1191,8 +1191,14 @@ document.getElementById('addGalleryForm').addEventListener('submit', async funct
     };
 
     if (currentEditingGalleryId) {
-        // Edit mode - for now just add as new
-        alert('Edit feature coming soon! Please delete and add new image.');
+        // Edit mode - update in MongoDB
+        try {
+            await API.gallery.update(currentEditingGalleryId, galleryData);
+            addActivity('Updated gallery image: ' + galleryData.title);
+            alert('Gallery image updated successfully!');
+        } catch(e) {
+            alert('Updated locally only.');
+        }
         currentEditingGalleryId = null;
     } else {
         // Add mode
@@ -1294,32 +1300,32 @@ function editPlacement(id) {
     document.getElementById('addPlacementModal').classList.add('active');
 }
 
-function editGallery(id) {
-    const item = gallery.find(g => g.id === id);
+async function editGallery(id) {
+    // Fetch latest gallery from API
+    const galleryData = await AdminAPI.getGallery();
+    const item = galleryData.find(g => (g._id && g._id == id) || (g.id && g.id == id));
     if (!item) return;
 
     currentEditingGalleryId = id;
 
     document.getElementById('galleryTitle').value = item.title;
     document.getElementById('galleryCategory').value = item.category;
-    document.getElementById('galleryImage').value = item.image; // Set hidden field
+    document.getElementById('galleryImage').value = item.image;
+    document.getElementById('galleryImageUrl').value = item.image;
     document.getElementById('galleryDate').value = item.date;
 
     // Show existing image preview
     if (item.image) {
-        document.getElementById('galleryImageName').textContent = 'Current image (click Choose Image to change)';
+        document.getElementById('galleryImageName').textContent = 'Current image';
         const preview = document.getElementById('galleryImagePreview');
         preview.style.display = 'block';
         preview.querySelector('img').src = item.image;
-        
-        // Remove required attribute from both file input and hidden field in edit mode
         document.getElementById('galleryImageFile').removeAttribute('required');
         document.getElementById('galleryImage').removeAttribute('required');
     }
 
     document.querySelector('#addGalleryModal .modal-header h2').textContent = 'Edit Gallery Image';
-    document.querySelector('#addGalleryModal button[type="submit"]').textContent = 'Update Gallery';
-
+    document.querySelector('#addGalleryModal button[type="submit"]').textContent = 'Update Image';
     document.getElementById('addGalleryModal').classList.add('active');
 }
 

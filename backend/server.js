@@ -133,6 +133,15 @@ app.delete('/api/gallery/:id', async (req, res) => {
     }
 });
 
+app.put('/api/gallery/:id', async (req, res) => {
+    try {
+        const updated = await Gallery.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updated);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // News Routes
 app.get('/api/news', async (req, res) => {
     try {

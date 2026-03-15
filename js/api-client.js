@@ -43,6 +43,20 @@ const API = {
                 console.error('Error deleting image:', error);
                 throw error;
             }
+        },
+
+        async update(id, imageData) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/gallery/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(imageData)
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('Error updating image:', error);
+                throw error;
+            }
         }
     },
 
