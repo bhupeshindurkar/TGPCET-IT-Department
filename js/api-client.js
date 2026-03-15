@@ -282,6 +282,51 @@ const API = {
     }
 };
 
+    // Announcements API
+    announcements: {
+        async getAll() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/announcements`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching announcements:', error);
+                return [];
+            }
+        },
+        async add(data) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/announcements`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('Error adding announcement:', error);
+                throw error;
+            }
+        },
+        async delete(id) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/announcements/${id}`, { method: 'DELETE' });
+                return await response.json();
+            } catch (error) {
+                console.error('Error deleting announcement:', error);
+                throw error;
+            }
+        },
+        async toggle(id) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/announcements/${id}/toggle`, { method: 'PATCH' });
+                return await response.json();
+            } catch (error) {
+                console.error('Error toggling announcement:', error);
+                throw error;
+            }
+        }
+    }
+};
+
 // Export for use in other files
 window.API = API;
 

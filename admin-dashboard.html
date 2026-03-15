@@ -47,6 +47,9 @@
             <a href="#" class="nav-item" data-section="messages">
                 <i class="fas fa-envelope"></i> Messages
             </a>
+            <a href="#" class="nav-item" data-section="announcements">
+                <i class="fas fa-bullhorn"></i> Announcements
+            </a>
             <a href="#" class="nav-item" data-section="settings">
                 <i class="fas fa-cog"></i> Settings
             </a>
@@ -283,6 +286,40 @@
                         <tr>
                             <td colspan="5" style="text-align: center; padding: 2rem; color: #94a3b8;">
                                 No messages yet.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Announcements Section -->
+        <div class="content-section" id="announcements">
+            <div class="section-header">
+                <h2>Popup Announcements</h2>
+                <button class="btn-primary" onclick="showAddAnnouncementModal()">
+                    <i class="fas fa-plus"></i> Add Announcement
+                </button>
+            </div>
+            <p style="color:#94a3b8; margin-bottom:1.5rem; font-size:0.95rem;">
+                <i class="fas fa-info-circle" style="color:#3b82f6;"></i>
+                Active announcements will show as a popup on the home page. Users can close it with X button.
+            </p>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Message</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="announcementsTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:2rem; color:#94a3b8;">
+                                No announcements yet.
                             </td>
                         </tr>
                     </tbody>
@@ -617,6 +654,39 @@
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" onclick="closeModal('editProfileModal')">Cancel</button>
                     <button type="submit" class="btn-primary">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Announcement Modal -->
+    <div class="modal" id="addAnnouncementModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Announcement</h2>
+                <button class="close-modal" onclick="closeModal('addAnnouncementModal')">&times;</button>
+            </div>
+            <form id="addAnnouncementForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="annTitle" placeholder="e.g. Exam Schedule, Holiday Notice" required>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="annMessage" rows="4" placeholder="Write the announcement details here..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="annType" required>
+                        <option value="info">Info (Blue)</option>
+                        <option value="warning">Warning (Yellow)</option>
+                        <option value="success">Success (Green)</option>
+                        <option value="danger">Urgent (Red)</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('addAnnouncementModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Publish Announcement</button>
                 </div>
             </form>
         </div>

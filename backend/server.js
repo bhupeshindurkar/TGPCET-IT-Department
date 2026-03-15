@@ -85,6 +85,14 @@ const messageSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now }
 });
 
+const announcementSchema = new mongoose.Schema({
+    title: String,
+    message: String,
+    type: { type: String, default: 'info' }, // info, warning, success, danger
+    active: { type: Boolean, default: true },
+    timestamp: { type: Date, default: Date.now }
+});
+
 // Models
 const Gallery = mongoose.model('Gallery', gallerySchema);
 const News = mongoose.model('News', newsSchema);
@@ -92,6 +100,7 @@ const Event = mongoose.model('Event', eventSchema);
 const Placement = mongoose.model('Placement', placementSchema);
 const Faculty = mongoose.model('Faculty', facultySchema);
 const Message = mongoose.model('Message', messageSchema);
+const Announcement = mongoose.model('Announcement', announcementSchema);
 
 // Routes
 
@@ -304,6 +313,55 @@ app.patch('/api/messages/:id/read', async (req, res) => {
             { new: true }
         );
         res.json(message);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Announcements Routes
+app.get('/api/announcements', async (req, res) => {
+    try {
+        const announcements = await Announcement.find({ active: true }).sort({ timestamp: -1 });
+        res.json(announcements);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/announcements/all', async (req, res) => {
+    try {
+        const announcements = await Announcement.find().sort({ timestamp: -1 });
+        res.json(announcements);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/api/announcements', async (req, res) => {
+    try {
+        const newAnn = new Announcement(req.body);
+        await newAnn.save();
+        res.status(201).json(newAnn);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/api/announcements/:id', async (req, res) => {
+    try {
+        await Announcement.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Announcement deleted' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.patch('/api/announcements/:id/toggle', async (req, res) => {
+    try {
+        const ann = await Announcement.findById(req.params.id);
+        ann.active = !ann.active;
+        await ann.save();
+        res.json(ann);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -1375,11 +1375,83 @@ async function initDashboard() {
     await renderGallery();
     renderNews();
     await renderMessages();
+    await renderAnnouncements();
     
     console.log('Admin Dashboard Loaded');
     console.log('API Status:', AdminAPI.isAPIAvailable ? 'Connected to MongoDB' : 'Using localStorage');
     console.log('Developer: Bhupesh Indurkar');
 }
+
+// ===== ANNOUNCEMENTS =====
+function showAddAnnouncementModal() {
+    document.getElementById('addAnnouncementForm').reset();
+    document.getElementById('addAnnouncementModal').classList.add('active');
+}
+
+async function renderAnnouncements() {
+    const tbody = document.getElementById('announcementsTableBody');
+    const data = await API.announcements.getAll();
+
+    // Also fetch inactive ones for admin view - use a separate call
+    let allData = data;
+    try {
+        const res = await fetch('https://tgpcet-it-department.onrender.com/api/announcements/all');
+        if (res.ok) allData = await res.json();
+    } catch(e) { /* use active only */ }
+
+    if (!allData || allData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:2rem;color:#94a3b8;">No announcements yet.</td></tr>`;
+        return;
+    }
+
+    const typeColors = { info: '#3b82f6', warning: '#f59e0b', success: '#10b981', danger: '#ef4444' };
+
+    tbody.innerHTML = allData.map(ann => `
+        <tr>
+            <td style="font-weight:600;">${ann.title}</td>
+            <td style="color:#94a3b8;max-width:300px;">${ann.message.substring(0, 80)}${ann.message.length > 80 ? '...' : ''}</td>
+            <td><span style="background:${typeColors[ann.type] || '#3b82f6'}22;color:${typeColors[ann.type] || '#3b82f6'};padding:0.25rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:600;">${ann.type.toUpperCase()}</span></td>
+            <td><span style="color:${ann.active ? '#10b981' : '#94a3b8'};font-weight:600;">${ann.active ? '🟢 Active' : '⚫ Inactive'}</span></td>
+            <td>
+                <button class="btn-icon" onclick="toggleAnnouncement('${ann._id}')" title="${ann.active ? 'Deactivate' : 'Activate'}">
+                    <i class="fas fa-${ann.active ? 'eye-slash' : 'eye'}"></i>
+                </button>
+                <button class="btn-icon btn-danger" onclick="deleteAnnouncement('${ann._id}')" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function toggleAnnouncement(id) {
+    await API.announcements.toggle(id);
+    await renderAnnouncements();
+}
+
+async function deleteAnnouncement(id) {
+    if (confirm('Delete this announcement?')) {
+        await API.announcements.delete(id);
+        await renderAnnouncements();
+        addActivity('Deleted an announcement');
+    }
+}
+
+document.getElementById('addAnnouncementForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const data = {
+        title: document.getElementById('annTitle').value,
+        message: document.getElementById('annMessage').value,
+        type: document.getElementById('annType').value,
+        active: true
+    };
+    await API.announcements.add(data);
+    addActivity('Added announcement: ' + data.title);
+    alert('Announcement published! It will show as popup on home page.');
+    this.reset();
+    closeModal('addAnnouncementModal');
+    await renderAnnouncements();
+});
 
 // Start initialization
 initDashboard();
