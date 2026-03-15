@@ -466,6 +466,24 @@ function loadDynamicContent() {
     function getBotResponse(message) {
         const msg = message.toLowerCase();
         
+        // TECH-XION 2.0 Event (Priority check)
+        if (msg.includes('techxion') || msg.includes('tech-xion') || msg.includes('tech xion') || msg.includes('hack arena') || msg.includes('hackathon') || msg.includes('bgmi') || msg.includes('free fire') || msg.includes('battle royale') || msg.includes('cipher chase') || msg.includes('idea canvas') || msg.includes('powerplay') || msg.includes('national event') || msg.includes('register') || (msg.includes('event') && !msg.includes('events page'))) {
+            return '🎉 <strong>TECH-XION 2.0 2K26</strong><br><br>' +
+                   '🏆 <strong>National Level Technical Event</strong><br>' +
+                   'IT Department, TGPCET Nagpur<br><br>' +
+                   '📅 <strong>27 & 28 March 2026</strong><br>' +
+                   '📍 TGPCET, Nagpur<br><br>' +
+                   '🗓️ <strong>Day 1 (27 March):</strong><br>' +
+                   '⚡ Hack Arena - 9 Hrs Hackathon<br>' +
+                   '🏏 Power-Play - Box Cricket<br>' +
+                   '🎮 Battle Royale - BGMI & Free Fire<br><br>' +
+                   '🗓️ <strong>Day 2 (28 March):</strong><br>' +
+                   '🔐 Cipher Chase - Escape Room<br>' +
+                   '🎨 Idea Canvas - Poster Presentation<br><br>' +
+                   '👨‍🏫 <strong>Coordinator:</strong> Prof. Jayesh Fating | 📞 9763643881<br><br>' +
+                   '🔗 <a href="https://informationtechnology-tgpcet.vercel.app/#/events" target="_blank" style="color:#60a5fa;font-weight:bold;">👉 Register Now</a>';
+        }
+        
         // Developer/Creator Info (Priority check - before other keywords)
         if (msg.includes('who created') || msg.includes('who made') || msg.includes('who built') || msg.includes('who designed') || msg.includes('creator') || msg.includes('developer of this') || (msg.includes('bhupesh') && !msg.includes('contact'))) {
             return '👨‍💻 <strong>Website Developer</strong><br><br>' +
