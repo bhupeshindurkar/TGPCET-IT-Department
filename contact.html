@@ -95,7 +95,7 @@
     <section class="container py-5">
         <h2 class="section-title">Send Us a Message</h2>
         <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
-            <form id="contactForm" action="https://formsubmit.co/bhupeshindurkar6@gmail.com" method="POST">
+            <form id="contactForm">
                 <!-- FormSubmit Configuration -->
                 <input type="hidden" name="_subject" value="New Contact Form Submission - TGPCET IT Department">
                 <input type="hidden" name="_next" value="https://tgpcet-it-department.vercel.app/thank-you.html">
@@ -231,13 +231,16 @@
         </div>
     </footer>
     <script src="js/main.js"></script>
-    <script src="js/api-client.js"></script>
     <script src="js/contact-form.js"></script>
     <script>
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
             contactForm.addEventListener('submit', async function(e) {
-                e.preventDefault(); // Stop default submission
+                e.preventDefault();
+
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitBtn.disabled = true;
 
                 const messageData = {
                     name: contactForm.querySelector('[name="name"]').value,
@@ -258,14 +261,24 @@
                     });
                     console.log('✅ Message saved to MongoDB');
                 } catch (err) {
-                    console.warn('API error, saving to localStorage');
-                    const msgs = JSON.parse(localStorage.getItem('messages') || '[]');
-                    msgs.unshift({ id: Date.now(), ...messageData });
-                    localStorage.setItem('messages', JSON.stringify(msgs));
+                    console.warn('API error:', err);
                 }
 
-                // Now submit to FormSubmit for email
-                contactForm.submit();
+                // Send email via FormSubmit using fetch
+                try {
+                    const formData = new FormData(contactForm);
+                    await fetch('https://formsubmit.co/ajax/bhupeshindurkar6@gmail.com', {
+                        method: 'POST',
+                        headers: { 'Accept': 'application/json' },
+                        body: formData
+                    });
+                    console.log('✅ Email sent via FormSubmit');
+                } catch (err) {
+                    console.warn('FormSubmit error:', err);
+                }
+
+                // Redirect to thank you page
+                window.location.href = 'thank-you.html';
             });
         }
     </script>
