@@ -88,7 +88,8 @@ const messageSchema = new mongoose.Schema({
 const announcementSchema = new mongoose.Schema({
     title: String,
     message: String,
-    type: { type: String, default: 'info' }, // info, warning, success, danger
+    image: String,
+    type: { type: String, default: 'info' },
     active: { type: Boolean, default: true },
     timestamp: { type: Date, default: Date.now }
 });

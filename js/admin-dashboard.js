@@ -1442,6 +1442,7 @@ document.getElementById('addAnnouncementForm').addEventListener('submit', async 
     const data = {
         title: document.getElementById('annTitle').value,
         message: document.getElementById('annMessage').value,
+        image: document.getElementById('annImage').value.trim() || '',
         type: document.getElementById('annType').value,
         active: true
     };
