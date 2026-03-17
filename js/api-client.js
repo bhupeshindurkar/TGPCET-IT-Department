@@ -5,13 +5,27 @@
 // API Base URL - Render deployment
 const API_BASE_URL = 'https://tgpcet-it-department.onrender.com/api';
 
+// Helper: fetch with timeout
+async function fetchWithTimeout(url, options = {}, ms = 8000) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), ms);
+    try {
+        const res = await fetch(url, { ...options, signal: controller.signal });
+        clearTimeout(timeout);
+        return res;
+    } catch (e) {
+        clearTimeout(timeout);
+        throw e;
+    }
+}
+
 // API Client
 const API = {
     // Gallery API
     gallery: {
         async getAll() {
             try {
-                const response = await fetch(`${API_BASE_URL}/gallery`);
+                const response = await fetchWithTimeout(`${API_BASE_URL}/gallery`);
                 return await response.json();
             } catch (error) {
                 console.error('Error fetching gallery:', error);
@@ -64,7 +78,7 @@ const API = {
     news: {
         async getAll() {
             try {
-                const response = await fetch(`${API_BASE_URL}/news`);
+                const response = await fetchWithTimeout(`${API_BASE_URL}/news`);
                 return await response.json();
             } catch (error) {
                 console.error('Error fetching news:', error);
@@ -103,7 +117,7 @@ const API = {
     events: {
         async getAll() {
             try {
-                const response = await fetch(`${API_BASE_URL}/events`);
+                const response = await fetchWithTimeout(`${API_BASE_URL}/events`);
                 return await response.json();
             } catch (error) {
                 console.error('Error fetching events:', error);
@@ -181,7 +195,7 @@ const API = {
     faculty: {
         async getAll() {
             try {
-                const response = await fetch(`${API_BASE_URL}/faculty`);
+                const response = await fetchWithTimeout(`${API_BASE_URL}/faculty`);
                 return await response.json();
             } catch (error) {
                 console.error('Error fetching faculty:', error);
@@ -234,7 +248,7 @@ const API = {
     messages: {
         async getAll() {
             try {
-                const response = await fetch(`${API_BASE_URL}/messages`);
+                const response = await fetchWithTimeout(`${API_BASE_URL}/messages`);
                 return await response.json();
             } catch (error) {
                 console.error('Error fetching messages:', error);
@@ -285,7 +299,7 @@ const API = {
     announcements: {
         async getAll() {
             try {
-                const response = await fetch(`${API_BASE_URL}/announcements`);
+                const response = await fetchWithTimeout(`${API_BASE_URL}/announcements`);
                 return await response.json();
             } catch (error) {
                 console.error('Error fetching announcements:', error);
@@ -329,15 +343,35 @@ const API = {
 // Export for use in other files
 window.API = API;
 
-// Test API connection on load
+// Wake up Render server on page load (ping in background)
 window.addEventListener('load', async () => {
     try {
-        const response = await fetch(API_BASE_URL.replace('/api', ''));
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), 5000);
+        const response = await fetch(API_BASE_URL.replace('/api', ''), { signal: controller.signal });
         const data = await response.json();
         if (data.status === 'OK') {
             console.log('✅ API Connected:', data.message);
+            // If dashboard is open, refresh data after server wakes up
+            if (typeof initDashboard === 'function' && window.AdminAPI && !window.AdminAPI.isAPIAvailable) {
+                window.AdminAPI.isAPIAvailable = true;
+                initDashboard();
+            }
         }
     } catch (error) {
         console.warn('⚠️ API not connected. Using localStorage fallback.');
+        // Retry after 30 seconds (Render may still be waking up)
+        setTimeout(async () => {
+            try {
+                const res = await fetch(API_BASE_URL.replace('/api', ''));
+                if (res.ok) {
+                    console.log('✅ API woke up on retry');
+                    if (typeof initDashboard === 'function') {
+                        window.AdminAPI.isAPIAvailable = true;
+                        initDashboard();
+                    }
+                }
+            } catch(e) {}
+        }, 30000);
     }
 });

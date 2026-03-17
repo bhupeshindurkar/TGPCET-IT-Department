@@ -6,16 +6,19 @@ const AdminAPI = {
     // Check if API is available
     isAPIAvailable: false,
 
-    // Initialize
+    // Initialize with 5 second timeout
     async init() {
         try {
-            const response = await fetch('https://tgpcet-it-department.onrender.com/');
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 5000);
+            const response = await fetch('https://tgpcet-it-department.onrender.com/', { signal: controller.signal });
+            clearTimeout(timeout);
             if (response.ok) {
                 this.isAPIAvailable = true;
                 console.log('✅ MongoDB API connected');
             }
         } catch (error) {
-            console.warn('⚠️ API not available, using localStorage');
+            console.warn('⚠️ API timeout/unavailable, using localStorage');
             this.isAPIAvailable = false;
         }
     },
