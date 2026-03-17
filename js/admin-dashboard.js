@@ -955,7 +955,8 @@ async function renderGallery() {
         'labs': 'Laboratories',
         'infrastructure': 'Infrastructure',
         'news': 'News & Media',
-        'achievements': 'Achievements & Awards'
+        'achievements': 'Achievements & Awards',
+        'parent-meet': 'Parent Meet'
     };
 
     grid.innerHTML = galleryData.map(item => `
