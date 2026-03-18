@@ -241,6 +241,30 @@
                     </div>
                 </div>
 
+                <!-- Countdown Timer -->
+                <div style="text-align:center; margin-bottom:2rem;">
+                    <p style="color:#f59e0b; font-weight:700; font-size:1rem; margin-bottom:1rem; letter-spacing:2px;">⏳ EVENT STARTS IN</p>
+                    <div id="techxion-countdown" style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+                        <div style="background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.05)); border:2px solid rgba(245,158,11,0.4); border-radius:16px; padding:1rem 1.5rem; min-width:80px;">
+                            <div id="cd-days" style="font-size:2.5rem; font-weight:900; color:#f59e0b; line-height:1;">0</div>
+                            <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; letter-spacing:1px; margin-top:0.25rem;">DAYS</div>
+                        </div>
+                        <div style="background:linear-gradient(135deg,rgba(59,130,246,0.15),rgba(59,130,246,0.05)); border:2px solid rgba(59,130,246,0.4); border-radius:16px; padding:1rem 1.5rem; min-width:80px;">
+                            <div id="cd-hours" style="font-size:2.5rem; font-weight:900; color:#3b82f6; line-height:1;">0</div>
+                            <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; letter-spacing:1px; margin-top:0.25rem;">HOURS</div>
+                        </div>
+                        <div style="background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05)); border:2px solid rgba(139,92,246,0.4); border-radius:16px; padding:1rem 1.5rem; min-width:80px;">
+                            <div id="cd-minutes" style="font-size:2.5rem; font-weight:900; color:#a78bfa; line-height:1;">0</div>
+                            <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; letter-spacing:1px; margin-top:0.25rem;">MINUTES</div>
+                        </div>
+                        <div style="background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(16,185,129,0.05)); border:2px solid rgba(16,185,129,0.4); border-radius:16px; padding:1rem 1.5rem; min-width:80px;">
+                            <div id="cd-seconds" style="font-size:2.5rem; font-weight:900; color:#10b981; line-height:1;">0</div>
+                            <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; letter-spacing:1px; margin-top:0.25rem;">SECONDS</div>
+                        </div>
+                    </div>
+                    <div id="cd-live-msg" style="display:none; color:#10b981; font-weight:700; font-size:1.2rem; margin-top:1rem;">🎉 Event is LIVE NOW!</div>
+                </div>
+
                 <!-- Register Button -->
                 <div style="text-align:center;">
                     <a href="https://informationtechnology-tgpcet.vercel.app/#/events" target="_blank"
@@ -693,6 +717,39 @@
         }
 
         document.addEventListener('DOMContentLoaded', loadAnnouncements);
+    </script>
+
+    <!-- Countdown Timer Script -->
+    <script>
+        (function() {
+            // Event date: 27 March 2026, 9:00 AM IST
+            const eventDate = new Date('2026-03-27T09:00:00+05:30').getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const diff = eventDate - now;
+
+                if (diff <= 0) {
+                    // Event is live or over
+                    document.getElementById('techxion-countdown').style.display = 'none';
+                    document.getElementById('cd-live-msg').style.display = 'block';
+                    return;
+                }
+
+                const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').textContent    = days;
+                document.getElementById('cd-hours').textContent   = String(hours).padStart(2, '0');
+                document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        })();
     </script>
 </body>
 
