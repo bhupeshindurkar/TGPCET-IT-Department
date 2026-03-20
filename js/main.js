@@ -461,9 +461,11 @@ function loadDynamicContent() {
                 <span style="width:8px;height:8px;border-radius:50%;background:#60a5fa;animation:typingDot 1.2s infinite ease-in-out;animation-delay:0s;"></span>
                 <span style="width:8px;height:8px;border-radius:50%;background:#60a5fa;animation:typingDot 1.2s infinite ease-in-out;animation-delay:0.2s;"></span>
                 <span style="width:8px;height:8px;border-radius:50%;background:#60a5fa;animation:typingDot 1.2s infinite ease-in-out;animation-delay:0.4s;"></span>
+                <span id="typing-status" style="color:#94a3b8;font-size:0.8rem;margin-left:6px;">Connecting...</span>
             </span>
         `;
-        // Inject keyframes once
+        setTimeout(() => { const s = document.getElementById('typing-status'); if (s) s.textContent = 'Waking up server...'; }, 5000);
+        setTimeout(() => { const s = document.getElementById('typing-status'); if (s) s.textContent = 'Almost there...'; }, 25000);
         if (!document.getElementById('typing-keyframes')) {
             const style = document.createElement('style');
             style.id = 'typing-keyframes';
@@ -473,14 +475,14 @@ function loadDynamicContent() {
         chatMessages.appendChild(typingMsg);
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
-        // Try Gemini API first, fallback to local
+        // Try Gemini API, fallback to local on failure
         let reply = '';
         try {
             const res = await fetch('https://tgpcet-it-department.onrender.com/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: text }),
-                signal: AbortSignal.timeout(15000)
+                signal: AbortSignal.timeout(60000)
             });
             if (res.ok) {
                 const data = await res.json();
