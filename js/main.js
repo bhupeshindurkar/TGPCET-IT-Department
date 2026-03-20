@@ -505,9 +505,17 @@ function loadDynamicContent() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    function isHindi(text) {
+        // Check for Hindi/Hinglish keywords
+        const hindiWords = ['kya','hai','hain','kaise','kaisa','kaisi','mujhe','mera','meri','mere','aap','tum','vo','voh','yeh','ye','nahi','nhi','haan','haa','bhai','yaar','bata','batao','chahiye','karo','karna','milega','milti','milte','accha','acha','theek','thik','sahi','galat','dekho','dekh','sun','suno','bol','bolo','kar','karo','ja','jao','lo','lena','dena','do','dedo','lelo','samjha','samjho','padh','padho','sikho','seekho','jana','aana','rehna','kab','kahan','kyun','kyunki','lekin','aur','ya','toh','to','se','mein','pe','par','ke','ki','ka','ko','ne','wala','wali','wale','bahut','bohat','thoda','zyada','jyada','kam','sab','kuch','koi','kitna','kitne','pehle','baad','abhi','ab','phir','fir','dobara'];
+        const lowerText = text.toLowerCase();
+        return hindiWords.some(w => lowerText.includes(w));
+    }
+
     function getBotResponse(message) {
         const msg = message.toLowerCase();
-        
+        const hindi = isHindi(message);
+
         // TECH-XION 2.0 Event (Priority check)
         if (msg.includes('techxion') || msg.includes('tech-xion') || msg.includes('tech xion') || msg.includes('hack arena') || msg.includes('hackathon') || msg.includes('bgmi') || msg.includes('free fire') || msg.includes('battle royale') || msg.includes('cipher chase') || msg.includes('idea canvas') || msg.includes('powerplay') || msg.includes('national event') || msg.includes('register') || (msg.includes('event') && !msg.includes('events page'))) {
             return '🎉 <strong>TECH-XION 2.0 2K26</strong><br><br>' +
@@ -547,7 +555,16 @@ function loadDynamicContent() {
         }
         
         // Career Guidance & Domain Selection
-        if (msg.includes('domain') || msg.includes('career') || msg.includes('field') || msg.includes('specialization') || (msg.includes('which') && (msg.includes('choose') || msg.includes('select')))) {
+        if (msg.includes('domain') || msg.includes('career') || msg.includes('field') || msg.includes('specialization') || (msg.includes('which') && (msg.includes('choose') || msg.includes('select'))) || (hindi && (msg.includes('kya') || msg.includes('kaun') || msg.includes('konsa') || msg.includes('kaunsa')))) {
+            if (hindi) {
+                return 'IT mein bahut saare career options hain:<br><br>' +
+                       '<strong>1. Web Development</strong> - React, Node.js - 4-10 LPA<br>' +
+                       '<strong>2. AI & Machine Learning</strong> - Python, TensorFlow - 6-15 LPA<br>' +
+                       '<strong>3. Cloud Computing</strong> - AWS, Azure - 5-12 LPA<br>' +
+                       '<strong>4. Cybersecurity</strong> - Ethical Hacking - 5-10 LPA<br>' +
+                       '<strong>5. Data Science</strong> - Python, SQL - 5-12 LPA<br><br>' +
+                       'Fresher ke liye Web Development ya Cloud sabse jaldi job dilata hai. Kisi ek ke baare mein aur detail mein batao?';
+            }
             return '🚀 <strong>IT Career Domains (2025 Trending):</strong><br><br>' +
                    '1️⃣ <strong>AI & Machine Learning</strong> - ⭐⭐⭐⭐⭐ | 6-15 LPA<br>' +
                    '2️⃣ <strong>Cloud & DevOps</strong> - ⭐⭐⭐⭐⭐ | 5-12 LPA<br>' +
@@ -768,6 +785,9 @@ function loadDynamicContent() {
             }
         }
         else if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey') || msg.includes('namaste') || msg.includes('bhai') || msg.includes('helo')) {
+            if (hindi) {
+                return 'Namaste! Main TGPCET IT Department ka AI Assistant hoon. Aap mujhse kuch bhi pooch sakte hain - IT career, courses, placements, ya koi bhi sawaal. Batao kya jaanna chahte ho?';
+            }
             return `👋 <strong>Hello!</strong><br><br>` +
                    `Welcome to <strong>TGPCET IT Department</strong>. I'm your intelligent assistant, here to guide you through your academic and career journey.<br><br>` +
                    `<strong>How can I assist you today?</strong><br><br>` +
@@ -787,7 +807,9 @@ function loadDynamicContent() {
         
         // Default - Smart fallback
         else {
-            // Try to understand what user is asking
+            if (hindi) {
+                return 'Aapka sawaal samajh aa gaya. Main IT department ke baare mein, career guidance, placements, courses, labs - sab ke baare mein bata sakta hoon. Thoda aur detail mein poochho, main poori help karunga!';
+            }
             if (msg.includes('?') || msg.includes('how') || msg.includes('what') || msg.includes('why') || msg.includes('when')) {
                 return '🤔 <strong>I understand you have a question!</strong><br><br>' +
                        'I can help you with:<br>' +
