@@ -455,8 +455,21 @@ function loadDynamicContent() {
         // Typing indicator
         const typingMsg = document.createElement('div');
         typingMsg.id = 'typing-indicator';
-        typingMsg.style.cssText = 'background:rgba(59,130,246,0.2);padding:1rem;border-radius:15px;border-left:4px solid #3b82f6;max-width:85%;';
-        typingMsg.innerHTML = '<p style="color:#94a3b8;margin:0;font-size:0.95rem;">⏳ Thinking...</p>';
+        typingMsg.style.cssText = 'background:rgba(59,130,246,0.2);padding:1rem 1.2rem;border-radius:15px;border-left:4px solid #3b82f6;max-width:85%;display:flex;align-items:center;gap:0.4rem;';
+        typingMsg.innerHTML = `
+            <span style="display:inline-flex;gap:5px;align-items:center;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#60a5fa;animation:typingDot 1.2s infinite ease-in-out;animation-delay:0s;"></span>
+                <span style="width:8px;height:8px;border-radius:50%;background:#60a5fa;animation:typingDot 1.2s infinite ease-in-out;animation-delay:0.2s;"></span>
+                <span style="width:8px;height:8px;border-radius:50%;background:#60a5fa;animation:typingDot 1.2s infinite ease-in-out;animation-delay:0.4s;"></span>
+            </span>
+        `;
+        // Inject keyframes once
+        if (!document.getElementById('typing-keyframes')) {
+            const style = document.createElement('style');
+            style.id = 'typing-keyframes';
+            style.textContent = `@keyframes typingDot { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }`;
+            document.head.appendChild(style);
+        }
         chatMessages.appendChild(typingMsg);
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
