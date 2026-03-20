@@ -401,7 +401,7 @@ app.post('/api/chat', async (req, res) => {
         if (!message) return res.status(400).json({ error: 'Message required' });
 
         const model = genai.getGenerativeModel({ 
-            model: 'gemini-1.5-flash',
+            model: 'gemini-pro',
             systemInstruction: SYSTEM_INSTRUCTION
         });
         const result = await model.generateContent(message);
