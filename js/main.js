@@ -555,7 +555,7 @@ function loadDynamicContent() {
         }
         
         // Career Guidance & Domain Selection
-        if (msg.includes('domain') || msg.includes('career') || msg.includes('field') || msg.includes('specialization') || (msg.includes('which') && (msg.includes('choose') || msg.includes('select'))) || (hindi && (msg.includes('kya') || msg.includes('kaun') || msg.includes('konsa') || msg.includes('kaunsa')))) {
+        if (msg.includes('domain') || msg.includes('career') || msg.includes('field') || msg.includes('specialization') || (msg.includes('which') && (msg.includes('choose') || msg.includes('select'))) || (hindi && (msg.includes('konsa') || msg.includes('kaunsa') || msg.includes('kaun sa')))) {
             if (hindi) {
                 return 'IT mein bahut saare career options hain:<br><br>' +
                        '<strong>1. Web Development</strong> - React, Node.js - 4-10 LPA<br>' +
@@ -808,7 +808,11 @@ function loadDynamicContent() {
         // Default - Smart fallback
         else {
             if (hindi) {
-                return 'Aapka sawaal samajh aa gaya. Main IT department ke baare mein, career guidance, placements, courses, labs - sab ke baare mein bata sakta hoon. Thoda aur detail mein poochho, main poori help karunga!';
+                // Casual conversation
+                if (msg.includes('kar rahe') || msg.includes('karte ho') || msg.includes('kya ho') || msg.includes('kaisa hai') || msg.includes('kaise ho')) {
+                    return 'Main theek hoon, aapki help karne ke liye taiyaar hoon! Batao kya jaanna chahte ho - IT career, courses, placements, ya kuch aur?';
+                }
+                return 'Samajh gaya! Main IT department ke baare mein, career guidance, placements, courses - sab ke baare mein bata sakta hoon. Thoda aur detail mein poochho!';
             }
             if (msg.includes('?') || msg.includes('how') || msg.includes('what') || msg.includes('why') || msg.includes('when')) {
                 return '🤔 <strong>I understand you have a question!</strong><br><br>' +
