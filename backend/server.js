@@ -7,13 +7,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
 require('dotenv').config();
-const { GoogleGenAI } = require('@google/genai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Gemini AI Setup
-const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const genai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const SYSTEM_INSTRUCTION = `You are a helpful AI assistant on the TGPCET IT Department website. Answer any question the user asks directly and clearly.
 
@@ -400,13 +400,13 @@ app.post('/api/chat', async (req, res) => {
         const { message } = req.body;
         if (!message) return res.status(400).json({ error: 'Message required' });
 
-        const response = await genai.models.generateContent({
+        const model = genai.getGenerativeModel({ 
             model: 'gemini-1.5-flash',
-            contents: message,
-            config: { systemInstruction: SYSTEM_INSTRUCTION }
+            systemInstruction: SYSTEM_INSTRUCTION
         });
-
-        res.json({ reply: response.text });
+        const result = await model.generateContent(message);
+        const reply = result.response.text();
+        res.json({ reply });
     } catch (error) {
         console.error('Gemini error:', error.message || error);
         res.status(500).json({ reply: 'Sorry, AI service unavailable. Please try again.' });
