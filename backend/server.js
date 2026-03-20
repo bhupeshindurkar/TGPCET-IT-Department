@@ -7,9 +7,28 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
 require('dotenv').config();
+const { GoogleGenAI } = require('@google/genai');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Gemini AI Setup
+const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'AIzaSyCnKIPwwP0JoX3BPXR_kDKVtW-nSp9kD4M' });
+
+const SYSTEM_INSTRUCTION = `You are the AI Assistant for the Department of Information Technology at Tulsiramji Gaikwad-Patil College of Engineering and Technology (TGPCET), Nagpur.
+
+Key Info:
+- HOD: Prof. Abhay Rewatkar | hod.it@tgpcet.com | +91 97660 85909
+- NBA Accredited B.Tech IT Program
+- Established: 2007 | Intake: 60 students/year
+- 9 Advanced Labs, 10 Faculty Members
+- NAAC A+ Grade Institute
+- Location: Mohgaon, Wardha Road, Nagpur - 441108
+- Upcoming Event: TECH-XION 2.0 on 27 & 28 March 2026 (Hackathon, BGMI, Escape Room, Poster Presentation)
+- Placements: 69 students placed (TCS, Infosys, Hexaware, Genpact, etc.)
+- Website: https://tgpcet-it-department.vercel.app
+
+Be helpful, professional, and concise. Answer in the same language the user writes in (Hindi/English/Hinglish). For queries outside department scope, politely redirect.`;
 
 // Middleware
 app.use(cors());
@@ -366,6 +385,25 @@ app.patch('/api/announcements/:id/toggle', async (req, res) => {
         res.json(ann);
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+});
+
+// Gemini AI Chat Route
+app.post('/api/chat', async (req, res) => {
+    try {
+        const { message } = req.body;
+        if (!message) return res.status(400).json({ error: 'Message required' });
+
+        const response = await genai.models.generateContent({
+            model: 'gemini-2.5-flash-preview-05-20',
+            contents: message,
+            config: { systemInstruction: SYSTEM_INSTRUCTION }
+        });
+
+        res.json({ reply: response.text });
+    } catch (error) {
+        console.error('Gemini error:', error);
+        res.status(500).json({ reply: 'Sorry, AI service unavailable. Please try again.' });
     }
 });
 

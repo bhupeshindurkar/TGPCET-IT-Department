@@ -441,7 +441,7 @@ function loadDynamicContent() {
         });
     });
 
-    function sendMessage(text) {
+    async function sendMessage(text) {
         if (!text.trim()) return;
 
         // User message
@@ -449,17 +449,44 @@ function loadDynamicContent() {
         userMsg.style.cssText = 'align-self:flex-end;background:linear-gradient(135deg,#3b82f6,#2563eb);padding:0.75rem 1rem;border-radius:15px;max-width:80%;color:white;';
         userMsg.textContent = text;
         chatMessages.appendChild(userMsg);
-
-        // Bot response
-        setTimeout(() => {
-            const botMsg = document.createElement('div');
-            botMsg.style.cssText = 'background:rgba(59,130,246,0.2);padding:1rem;border-radius:15px;border-left:4px solid #3b82f6;max-width:85%;';
-            botMsg.innerHTML = `<p style="color:#e2e8f0;margin:0;font-size:0.95rem;line-height:1.6;">${getBotResponse(text)}</p>`;
-            chatMessages.appendChild(botMsg);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 500);
-
         chatInput.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Typing indicator
+        const typingMsg = document.createElement('div');
+        typingMsg.id = 'typing-indicator';
+        typingMsg.style.cssText = 'background:rgba(59,130,246,0.2);padding:1rem;border-radius:15px;border-left:4px solid #3b82f6;max-width:85%;';
+        typingMsg.innerHTML = '<p style="color:#94a3b8;margin:0;font-size:0.95rem;">⏳ Thinking...</p>';
+        chatMessages.appendChild(typingMsg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Try Gemini API first, fallback to local
+        let reply = '';
+        try {
+            const res = await fetch('https://tgpcet-it-department.onrender.com/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text }),
+                signal: AbortSignal.timeout(15000)
+            });
+            if (res.ok) {
+                const data = await res.json();
+                reply = data.reply || getBotResponse(text);
+            } else {
+                reply = getBotResponse(text);
+            }
+        } catch (e) {
+            reply = getBotResponse(text);
+        }
+
+        // Remove typing indicator and show reply
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+
+        const botMsg = document.createElement('div');
+        botMsg.style.cssText = 'background:rgba(59,130,246,0.2);padding:1rem;border-radius:15px;border-left:4px solid #3b82f6;max-width:85%;';
+        botMsg.innerHTML = `<p style="color:#e2e8f0;margin:0;font-size:0.95rem;line-height:1.6;">${reply}</p>`;
+        chatMessages.appendChild(botMsg);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
