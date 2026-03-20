@@ -26,7 +26,7 @@ TGPCET IT DEPARTMENT CONTEXT (use when relevant):
 - College: Tulsiramji Gaikwad-Patil College of Engineering & Technology, Nagpur
 - HOD: Prof. Abhay Rewatkar | hod.it@tgpcet.com | +91 97660 85909
 - NBA Accredited B.Tech IT | Established 2007 | 60 seats/year | NAAC A+
-- 9 Labs, 10 Faculty | Placements: TCS, Infosys, Wipro, Hexaware, Genpact
+- 9 Labs, 10 Faculty | Placements: 134 students placed (2021-24) at TCS, Infosys, Wipro, Hexaware, Genpact, Reliance Jio, Nitor Infotech, Accenture, Persistent
 - Event: TECH-XION 2.0 on 27-28 March 2026 (Hackathon, BGMI, Escape Room)
 - Website: https://tgpcet-it-department.vercel.app
 
