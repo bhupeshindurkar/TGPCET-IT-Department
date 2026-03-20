@@ -13,7 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Gemini AI Setup
-const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'AIzaSyCnKIPwwP0JoX3BPXR_kDKVtW-nSp9kD4M' });
+const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const SYSTEM_INSTRUCTION = `You are a helpful AI assistant on the TGPCET IT Department website. Answer any question the user asks directly and clearly.
 
