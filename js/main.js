@@ -559,7 +559,7 @@ function loadDynamicContent() {
         }
         
         // AI/ML Domain
-        else if (msg.includes('ai') || msg.includes('artificial') || msg.includes('machine learning') || msg.includes(' ml ') || msg.includes('deep learning')) {
+        else if (msg.includes('artificial intelligence') || msg.includes('machine learning') || msg.includes('deep learning') || msg.includes(' ml ') || /\bai\b/.test(msg)) {
             return '🤖 <strong>AI & Machine Learning</strong><br><br>' +
                    '<strong>Why Choose?</strong> Highest paying, future-proof<br>' +
                    '<strong>Skills:</strong> Python, TensorFlow, PyTorch, Neural Networks<br>' +
@@ -765,7 +765,7 @@ function loadDynamicContent() {
                 return '🌆 <strong>Good Evening!</strong><br>It\'s evening! A bit early for sleep, but rest well if you\'re tired!<br><br>💡 Or ask me anything you need!';
             }
         }
-        else if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey') || msg.includes('namaste')) {
+        else if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey') || msg.includes('namaste') || msg.includes('bhai') || msg.includes('helo')) {
             return `👋 <strong>Hello!</strong><br><br>` +
                    `Welcome to <strong>TGPCET IT Department</strong>. I'm your intelligent assistant, here to guide you through your academic and career journey.<br><br>` +
                    `<strong>How can I assist you today?</strong><br><br>` +
