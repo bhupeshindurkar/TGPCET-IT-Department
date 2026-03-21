@@ -516,6 +516,30 @@ function loadDynamicContent() {
         const msg = message.toLowerCase();
         const hindi = isHindi(message);
 
+        // Name question
+        if (msg.includes('naam kya') || msg.includes('nam kya') || msg.includes('name kya') || msg.includes('your name') || msg.includes('aapka naam') || msg.includes('aapka nam') || msg.includes('tumhara naam') || msg.includes('what is your name') || msg.includes('who are you')) {
+            if (hindi) return 'Main IT Assistant hoon - TGPCET IT Department ka AI chatbot. Aap mujhse IT career, courses, placements, events - kuch bhi pooch sakte ho!';
+            return 'I am the IT Assistant - AI chatbot of TGPCET IT Department. Ask me anything about IT careers, courses, placements, or events!';
+        }
+
+        // How are you
+        if (msg.includes('kaise ho') || msg.includes('kaisa hai') || msg.includes('kya haal') || msg.includes('how are you') || msg.includes('how r u')) {
+            if (hindi) return 'Main bilkul theek hoon, aapki help karne ke liye taiyaar hoon! Batao kya jaanna chahte ho?';
+            return 'I am doing great and ready to help you! What would you like to know?';
+        }
+
+        // What are you doing
+        if (msg.includes('kya kar rahe') || msg.includes('kya akr rahe') || msg.includes('kya kr rahe') || msg.includes('what are you doing')) {
+            if (hindi) return 'Main aapke sawaalon ka intezaar kar raha tha! IT career, placements, courses - kuch bhi poochho, main jawab dunga.';
+            return 'I was waiting for your questions! Ask me about IT careers, placements, courses - anything!';
+        }
+
+        // Which branch / department
+        if (msg.includes('mechanical') || msg.includes('civil') || msg.includes('electrical') || msg.includes('electronics') || msg.includes('branch ka hu') || msg.includes('branch se hu')) {
+            if (hindi) return 'Koi baat nahi! IT department ki website pe aapka swagat hai. Agar IT mein interest hai ya IT ke baare mein kuch jaanna chahte ho - career, courses, placements - toh main poori help karunga!';
+            return 'Welcome! Even if you are from another branch, I can help you with IT career guidance, courses, and placement info. Feel free to ask!';
+        }
+
         // TECH-XION 2.0 Event (Priority check)
         if (msg.includes('techxion') || msg.includes('tech-xion') || msg.includes('tech xion') || msg.includes('hack arena') || msg.includes('hackathon') || msg.includes('bgmi') || msg.includes('free fire') || msg.includes('battle royale') || msg.includes('cipher chase') || msg.includes('idea canvas') || msg.includes('powerplay') || msg.includes('national event') || msg.includes('register') || (msg.includes('event') && !msg.includes('events page'))) {
             return '🎉 <strong>TECH-XION 2.0 2K26</strong><br><br>' +
