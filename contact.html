@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -45,7 +45,6 @@
                     <li><a href="academics.html">Academics</a></li>
                     <li><a href="faculty.html">Faculty</a></li>
                     <li><a href="infrastructure.html">Infrastructure</a></li>
-                    <li><a href="research.html">Research</a></li>
                     <li><a href="placements.html">Placements</a></li>
                     <li><a href="students.html">Students</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
@@ -266,7 +265,7 @@
                         body: JSON.stringify({ name, email, phone, subject, message, timestamp: new Date().toISOString(), read: false })
                     });
                     const data = await res.json();
-                    console.log('✅ Saved to MongoDB:', data._id);
+                    console.log('? Saved to MongoDB:', data._id);
                 } catch (err) {
                     console.warn('MongoDB error:', err);
                 }
@@ -278,7 +277,7 @@
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: JSON.stringify({ name, email, phone, subject, message, _subject: 'New Message - TGPCET IT Department' })
                     });
-                    console.log('✅ Email sent');
+                    console.log('? Email sent');
                 } catch (err) {
                     console.warn('Email error:', err);
                 }
