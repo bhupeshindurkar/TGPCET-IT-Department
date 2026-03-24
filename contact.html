@@ -282,8 +282,17 @@
                     console.warn('Email error:', err);
                 }
 
-                // Redirect
-                window.location.href = 'thank-you.html';
+                // Redirect with form data as URL params
+                const params = new URLSearchParams({
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    subject: subject,
+                    message: message,
+                    date: new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' }),
+                    time: new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' })
+                });
+                window.location.href = 'thank-you.html?' + params.toString();
             });
         });
     </script>

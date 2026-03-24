@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +7,9 @@
     <link rel="icon" type="image/png" href="images/college-logo/tgpcet-logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
@@ -25,507 +20,339 @@
             overflow: hidden;
             position: relative;
         }
-
-        /* Animated Background */
-        .bg-animation {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
-
+        .bg-animation { position:absolute; width:100%; height:100%; overflow:hidden; z-index:0; }
         .bg-animation span {
-            position: absolute;
-            display: block;
-            width: 20px;
-            height: 20px;
-            background: rgba(59, 130, 246, 0.1);
-            animation: float 25s infinite;
-            border-radius: 50%;
+            position:absolute; display:block; width:20px; height:20px;
+            background:rgba(59,130,246,0.08); animation:float 25s infinite; border-radius:50%;
         }
-
-        .bg-animation span:nth-child(1) { left: 10%; animation-delay: 0s; }
-        .bg-animation span:nth-child(2) { left: 20%; animation-delay: 2s; width: 30px; height: 30px; }
-        .bg-animation span:nth-child(3) { left: 30%; animation-delay: 4s; }
-        .bg-animation span:nth-child(4) { left: 40%; animation-delay: 6s; width: 25px; height: 25px; }
-        .bg-animation span:nth-child(5) { left: 50%; animation-delay: 8s; }
-        .bg-animation span:nth-child(6) { left: 60%; animation-delay: 10s; width: 35px; height: 35px; }
-        .bg-animation span:nth-child(7) { left: 70%; animation-delay: 12s; }
-        .bg-animation span:nth-child(8) { left: 80%; animation-delay: 14s; width: 28px; height: 28px; }
-        .bg-animation span:nth-child(9) { left: 90%; animation-delay: 16s; }
-        .bg-animation span:nth-child(10) { left: 15%; animation-delay: 18s; width: 32px; height: 32px; }
-
+        .bg-animation span:nth-child(1){left:10%;animation-delay:0s;}
+        .bg-animation span:nth-child(2){left:25%;animation-delay:3s;width:30px;height:30px;}
+        .bg-animation span:nth-child(3){left:45%;animation-delay:6s;}
+        .bg-animation span:nth-child(4){left:65%;animation-delay:9s;width:25px;height:25px;}
+        .bg-animation span:nth-child(5){left:80%;animation-delay:12s;}
         @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(720deg);
-                opacity: 0;
-            }
+            0%{transform:translateY(100vh);opacity:0;}
+            10%{opacity:0.6;}90%{opacity:0.3;}
+            100%{transform:translateY(-100vh);opacity:0;}
         }
-
-        /* Main Container */
-        .thank-you-container {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 3rem;
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            animation: slideUp 1s ease-out;
+        .container {
+            position:relative; z-index:1; text-align:center;
+            padding:3rem 2.5rem; max-width:680px; width:90%;
+            background:rgba(255,255,255,0.03);
+            backdrop-filter:blur(20px);
+            border-radius:24px;
+            border:1px solid rgba(255,255,255,0.08);
+            box-shadow:0 20px 60px rgba(0,0,0,0.5);
+            animation:slideUp 0.8s ease-out;
         }
-
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from{opacity:0;transform:translateY(40px);}
+            to{opacity:1;transform:translateY(0);}
         }
-
-        /* Success Icon */
-        .success-icon {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 2rem;
-            position: relative;
-            animation: scaleIn 0.8s ease-out 0.3s both;
+        .icon-wrap {
+            width:90px; height:90px; margin:0 auto 1.5rem;
+            background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+            border-radius:50%; display:flex; align-items:center; justify-content:center;
+            box-shadow:0 8px 30px rgba(59,130,246,0.4);
+            animation:scaleIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
         }
-
-        @keyframes scaleIn {
-            from {
-                transform: scale(0);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .success-icon .circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4);
-            }
-            50% {
-                box-shadow: 0 10px 60px rgba(59, 130, 246, 0.6);
-            }
-        }
-
-        .success-icon i {
-            font-size: 60px;
-            color: #fff;
-        }
-
-        /* Text Content */
+        @keyframes scaleIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+        .icon-wrap i { font-size:2.5rem; color:#fff; }
         h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-            animation: fadeIn 1s ease-out 0.5s both;
+            font-size:2.2rem; font-weight:800;
+            background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text; margin-bottom:0.75rem;
         }
+        .subtitle { color:#94a3b8; font-size:1rem; line-height:1.7; margin-bottom:2rem; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Summary card */
+        .summary {
+            background:rgba(59,130,246,0.06);
+            border:1px solid rgba(59,130,246,0.15);
+            border-radius:14px; padding:1.5rem; text-align:left; margin-bottom:2rem;
         }
-
-        .message {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            line-height: 1.8;
-            animation: fadeIn 1s ease-out 0.7s both;
+        .summary-title {
+            font-size:0.7rem; letter-spacing:3px; text-transform:uppercase;
+            color:#3b82f6; font-weight:600; margin-bottom:1rem;
         }
-
-        /* Developer Credit */
-        .developer-credit {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1s ease-out 1s both;
+        .summary-row {
+            display:flex; gap:0.75rem; padding:0.6rem 0;
+            border-bottom:1px solid rgba(255,255,255,0.05);
+            align-items:flex-start;
         }
-
-        .developer-credit p {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .developer-name {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #3b82f6, #10b981, #8b5cf6);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            animation: gradientShift 3s ease infinite, textGlow 2s ease-in-out infinite;
-            text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
-            letter-spacing: 2px;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
-        @keyframes textGlow {
-            0%, 100% {
-                filter: brightness(1);
-            }
-            50% {
-                filter: brightness(1.3);
-            }
-        }
-
-        .developer-name i {
-            color: #3b82f6;
-            font-size: 1.5rem;
-            animation: rotate 3s linear infinite;
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Typing Animation for Name */
-        .typing-name {
-            display: inline-block;
-            overflow: hidden;
-            border-right: 3px solid #3b82f6;
-            white-space: nowrap;
-            animation: typing 2s steps(20) 1.5s both, blink 0.75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from {
-                width: 0;
-            }
-            to {
-                width: 100%;
-            }
-        }
-
-        @keyframes blink {
-            50% {
-                border-color: transparent;
-            }
-        }
-
-        .developer-title {
-            font-size: 1rem;
-            color: #8b5cf6;
-            font-weight: 600;
-            margin-top: 0.5rem;
-            animation: fadeInUp 1s ease-out 2.5s both;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .developer-contact {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #94a3b8;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover {
-            color: #3b82f6;
-            transform: translateY(-2px);
-        }
-
-        .contact-item i {
-            color: #3b82f6;
-        }
-
-        .contact-item a {
-            color: inherit;
-            text-decoration: none;
-        }
+        .summary-row:last-child { border-bottom:none; }
+        .summary-row i { color:#3b82f6; width:16px; margin-top:2px; flex-shrink:0; font-size:0.85rem; }
+        .summary-label { color:#64748b; font-size:0.82rem; min-width:70px; flex-shrink:0; }
+        .summary-value { color:#e2e8f0; font-size:0.9rem; word-break:break-word; }
 
         /* Buttons */
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-            animation: fadeIn 1s ease-out 0.9s both;
-        }
-
+        .btn-group { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem; }
         .btn {
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1rem;
+            padding:0.8rem 1.8rem; border-radius:50px; font-weight:600;
+            text-decoration:none; display:inline-flex; align-items:center;
+            gap:0.5rem; font-size:0.95rem; cursor:pointer; border:none; transition:all 0.3s;
         }
-
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            color: #fff;
-            border: none;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            background:linear-gradient(135deg,#3b82f6,#8b5cf6); color:#fff;
+            box-shadow:0 8px 25px rgba(59,130,246,0.3);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 35px rgba(59,130,246,0.5); }
+        .btn-outline {
+            background:rgba(255,255,255,0.05); color:#94a3b8;
+            border:1px solid rgba(255,255,255,0.1);
         }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: #94a3b8;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .btn-outline:hover { background:rgba(255,255,255,0.1); color:#fff; transform:translateY(-2px); }
+        .btn-pdf {
+            background:linear-gradient(135deg,#10b981,#059669); color:#fff;
+            box-shadow:0 8px 25px rgba(16,185,129,0.3);
         }
+        .btn-pdf:hover { transform:translateY(-2px); box-shadow:0 12px 35px rgba(16,185,129,0.5); }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            transform: translateY(-3px);
+        /* Footer credit */
+        .credit {
+            padding-top:1.5rem;
+            border-top:1px solid rgba(255,255,255,0.06);
+            color:#334155; font-size:0.78rem; letter-spacing:0.5px;
         }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .thank-you-container {
-                padding: 2rem;
-                margin: 1rem;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .message {
-                font-size: 1rem;
-            }
-
-            .success-icon {
-                width: 100px;
-                height: 100px;
-            }
-
-            .success-icon .circle {
-                width: 100px;
-                height: 100px;
-            }
-
-            .success-icon i {
-                font-size: 50px;
-            }
-
-            .developer-contact {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
+        .credit span { color:#475569; }
     </style>
 </head>
-
 <body>
-    <!-- Animated Background -->
     <div class="bg-animation">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span><span></span><span></span>
     </div>
 
-    <!-- Main Content -->
-    <div class="thank-you-container">
-        <!-- Success Icon -->
-        <div class="success-icon">
-            <div class="circle">
-                <i class="fas fa-check"></i>
+    <div class="container">
+        <div class="icon-wrap"><i class="fas fa-check"></i></div>
+        <h1>Message Sent!</h1>
+        <p class="subtitle">Thank you for reaching out to the IT Department, TGPCET Nagpur.<br>We will get back to you shortly.</p>
+
+        <!-- Summary -->
+        <div class="summary">
+            <div class="summary-title">Submission Summary</div>
+            <div class="summary-row">
+                <i class="fas fa-user"></i>
+                <span class="summary-label">Name</span>
+                <span class="summary-value" id="s-name">—</span>
+            </div>
+            <div class="summary-row">
+                <i class="fas fa-envelope"></i>
+                <span class="summary-label">Email</span>
+                <span class="summary-value" id="s-email">—</span>
+            </div>
+            <div class="summary-row">
+                <i class="fas fa-phone"></i>
+                <span class="summary-label">Phone</span>
+                <span class="summary-value" id="s-phone">—</span>
+            </div>
+            <div class="summary-row">
+                <i class="fas fa-tag"></i>
+                <span class="summary-label">Subject</span>
+                <span class="summary-value" id="s-subject">—</span>
+            </div>
+            <div class="summary-row">
+                <i class="fas fa-comment-alt"></i>
+                <span class="summary-label">Message</span>
+                <span class="summary-value" id="s-message">—</span>
+            </div>
+            <div class="summary-row">
+                <i class="fas fa-clock"></i>
+                <span class="summary-label">Submitted</span>
+                <span class="summary-value" id="s-date">—</span>
             </div>
         </div>
 
-        <!-- Thank You Message -->
-        <h1>Thank You!</h1>
-        <p class="message">
-            Your message has been successfully received. We appreciate you taking the time to reach out to the IT Department at TGPCET Nagpur. Our team will get back to you shortly.
-        </p>
-
-        <!-- Action Buttons -->
-        <div class="button-group">
+        <div class="btn-group">
+            <button class="btn btn-pdf" onclick="downloadPDF()">
+                <i class="fas fa-file-pdf"></i> Download Receipt
+            </button>
             <a href="index.html" class="btn btn-primary">
                 <i class="fas fa-home"></i> Back to Home
             </a>
-            <a href="contact.html" class="btn btn-secondary">
-                <i class="fas fa-envelope"></i> Send Another Message
+            <a href="contact.html" class="btn btn-outline">
+                <i class="fas fa-envelope"></i> Send Another
             </a>
         </div>
 
-        <!-- Developer Credit -->
-        <div class="developer-credit">
-            <p>Website Designed & Developed by</p>
-            <div class="developer-name">
-                <i class="fas fa-code"></i>
-                <span class="typing-name">Bhupesh Indurkar</span>
-            </div>
-            <div class="developer-title">Full Stack Developer</div>
-            <div class="developer-contact">
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <a href="mailto:bhupeshindurkar6@gmail.com">bhupeshindurkar6@gmail.com</a>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-laptop-code"></i>
-                    <span>Web Development Expert</span>
-                </div>
-            </div>
-        </div>
+        <div class="credit">Developed by <span>IT Department, TGPCET Nagpur</span></div>
     </div>
 
     <script>
-        // Typing effect for developer name
-        document.addEventListener('DOMContentLoaded', function() {
-            const typingElement = document.querySelector('.typing-name');
-            if (typingElement) {
-                const text = 'Bhupesh Indurkar';
-                typingElement.textContent = '';
-                let index = 0;
-                
-                setTimeout(() => {
-                    const typeInterval = setInterval(() => {
-                        if (index < text.length) {
-                            typingElement.textContent += text.charAt(index);
-                            index++;
-                        } else {
-                            clearInterval(typeInterval);
-                            // Remove cursor after typing completes
-                            setTimeout(() => {
-                                typingElement.style.borderRight = 'none';
-                            }, 500);
-                        }
-                    }, 100);
-                }, 1500);
-            }
-        });
+        const params = new URLSearchParams(window.location.search);
+        const data = {
+            name:    params.get('name')    || 'N/A',
+            email:   params.get('email')   || 'N/A',
+            phone:   params.get('phone')   || 'N/A',
+            subject: params.get('subject') || 'N/A',
+            message: params.get('message') || 'N/A',
+            date:    params.get('date')    || new Date().toLocaleDateString('en-IN'),
+            time:    params.get('time')    || new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'})
+        };
 
-        // Add sparkle effect on mouse move
-        document.addEventListener('mousemove', (e) => {
-            if (Math.random() > 0.95) {
-                const sparkle = document.createElement('div');
-                sparkle.style.position = 'absolute';
-                sparkle.style.left = e.pageX + 'px';
-                sparkle.style.top = e.pageY + 'px';
-                sparkle.style.width = '5px';
-                sparkle.style.height = '5px';
-                sparkle.style.background = '#3b82f6';
-                sparkle.style.borderRadius = '50%';
-                sparkle.style.pointerEvents = 'none';
-                sparkle.style.animation = 'sparkle 1s ease-out forwards';
-                document.body.appendChild(sparkle);
+        document.getElementById('s-name').textContent    = data.name;
+        document.getElementById('s-email').textContent   = data.email;
+        document.getElementById('s-phone').textContent   = data.phone;
+        document.getElementById('s-subject').textContent = data.subject;
+        document.getElementById('s-message').textContent = data.message;
+        document.getElementById('s-date').textContent    = data.date + ' at ' + data.time;
 
-                setTimeout(() => sparkle.remove(), 1000);
-            }
-        });
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+            const W = 210, margin = 20;
 
-        // Add sparkle animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes sparkle {
-                0% {
-                    transform: scale(0);
-                    opacity: 1;
-                }
-                100% {
-                    transform: scale(2);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+            // Dark header background
+            doc.setFillColor(15, 23, 42);
+            doc.rect(0, 0, W, 297, 'F');
+
+            // Header bar
+            doc.setFillColor(30, 41, 59);
+            doc.rect(0, 0, W, 55, 'F');
+
+            // Blue accent line
+            doc.setFillColor(59, 130, 246);
+            doc.rect(0, 53, W, 2, 'F');
+
+            // College name
+            doc.setTextColor(148, 163, 184);
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'normal');
+            doc.text('TULSIRAMJI GAIKWAD-PATIL COLLEGE OF ENGINEERING & TECHNOLOGY, NAGPUR', W/2, 14, {align:'center'});
+
+            // Dept name
+            doc.setTextColor(226, 232, 240);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Department of Information Technology', W/2, 26, {align:'center'});
+
+            // Receipt title
+            doc.setTextColor(96, 165, 250);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.text('MESSAGE RECEIPT', W/2, 38, {align:'center'});
+
+            // Ref number
+            const ref = 'TGPCET-IT-' + Date.now().toString().slice(-6);
+            doc.setTextColor(100, 116, 139);
+            doc.setFontSize(8);
+            doc.text('Ref: ' + ref, W/2, 47, {align:'center'});
+
+            // Content area
+            let y = 72;
+
+            // Section: Sender Details
+            doc.setFillColor(30, 41, 59);
+            doc.roundedRect(margin, y-6, W - margin*2, 8, 2, 2, 'F');
+            doc.setTextColor(96, 165, 250);
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.text('SENDER DETAILS', margin + 4, y, {});
+            y += 10;
+
+            const fields = [
+                ['Full Name',    data.name],
+                ['Email Address',data.email],
+                ['Phone Number', data.phone],
+            ];
+
+            fields.forEach(([label, value]) => {
+                doc.setTextColor(100, 116, 139);
+                doc.setFontSize(8.5);
+                doc.setFont('helvetica', 'normal');
+                doc.text(label + ':', margin + 2, y);
+                doc.setTextColor(226, 232, 240);
+                doc.setFont('helvetica', 'bold');
+                doc.text(value, margin + 50, y);
+                // underline
+                doc.setDrawColor(51, 65, 85);
+                doc.line(margin, y + 2, W - margin, y + 2);
+                y += 10;
+            });
+
+            y += 6;
+
+            // Section: Message Details
+            doc.setFillColor(30, 41, 59);
+            doc.roundedRect(margin, y-6, W - margin*2, 8, 2, 2, 'F');
+            doc.setTextColor(96, 165, 250);
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.text('MESSAGE DETAILS', margin + 4, y);
+            y += 10;
+
+            // Subject
+            doc.setTextColor(100, 116, 139);
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Subject:', margin + 2, y);
+            doc.setTextColor(226, 232, 240);
+            doc.setFont('helvetica', 'bold');
+            doc.text(data.subject, margin + 50, y);
+            doc.setDrawColor(51, 65, 85);
+            doc.line(margin, y + 2, W - margin, y + 2);
+            y += 12;
+
+            // Message box
+            doc.setTextColor(100, 116, 139);
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Message:', margin + 2, y);
+            y += 6;
+
+            doc.setFillColor(22, 33, 51);
+            const msgLines = doc.splitTextToSize(data.message, W - margin*2 - 8);
+            const msgBoxH = msgLines.length * 5.5 + 8;
+            doc.roundedRect(margin, y, W - margin*2, msgBoxH, 3, 3, 'F');
+            doc.setTextColor(203, 213, 225);
+            doc.setFontSize(9);
+            doc.text(msgLines, margin + 4, y + 6);
+            y += msgBoxH + 12;
+
+            // Submission time
+            doc.setFillColor(30, 41, 59);
+            doc.roundedRect(margin, y-6, W - margin*2, 8, 2, 2, 'F');
+            doc.setTextColor(96, 165, 250);
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.text('SUBMISSION INFO', margin + 4, y);
+            y += 10;
+
+            doc.setTextColor(100, 116, 139);
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Date & Time:', margin + 2, y);
+            doc.setTextColor(226, 232, 240);
+            doc.setFont('helvetica', 'bold');
+            doc.text(data.date + ' at ' + data.time, margin + 50, y);
+            doc.setDrawColor(51, 65, 85);
+            doc.line(margin, y + 2, W - margin, y + 2);
+            y += 10;
+
+            doc.setTextColor(100, 116, 139);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Reference No:', margin + 2, y);
+            doc.setTextColor(226, 232, 240);
+            doc.setFont('helvetica', 'bold');
+            doc.text(ref, margin + 50, y);
+
+            // Footer
+            doc.setFillColor(30, 41, 59);
+            doc.rect(0, 272, W, 25, 'F');
+            doc.setFillColor(59, 130, 246);
+            doc.rect(0, 272, W, 1, 'F');
+
+            doc.setTextColor(148, 163, 184);
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'normal');
+            doc.text('This is an auto-generated receipt. Please keep it for your records.', W/2, 281, {align:'center'});
+
+            doc.setTextColor(71, 85, 105);
+            doc.setFontSize(7.5);
+            doc.text('Developed by IT Department, TGPCET Nagpur  |  hod.it@tgpcet.com  |  +91 97660 85909', W/2, 289, {align:'center'});
+
+            doc.save('TGPCET_IT_Message_Receipt_' + data.name.replace(/\s+/g,'_') + '.pdf');
+        }
     </script>
 </body>
-
 </html>

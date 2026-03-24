@@ -726,7 +726,7 @@ function loadDynamicContent() {
         
         // Research
         else if (msg.includes('research') || msg.includes('project') || msg.includes('publication') || msg.includes('paper')) {
-            return '🔬 <strong>Research & Projects:</strong><br>• Faculty publications in reputed journals<br>• Student projects on AI/ML, IoT, Cloud Computing<br>• Research collaborations with industries<br><a href="research.html" style="color:#60a5fa;">View Research</a>';
+            return '🔬 <strong>Research & Projects:</strong><br>• Faculty publications in reputed journals<br>• Student projects on AI/ML, IoT, Cloud Computing<br>• Research collaborations with industries<br><a href="academics.html" style="color:#60a5fa;">View Academics</a>';
         }
         
         // Fees
