@@ -197,12 +197,14 @@
         document.getElementById('s-message').textContent = data.message;
         document.getElementById('s-date').textContent    = data.date + ' at ' + data.time;
 
+
+
         function downloadPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
             const W = 210, margin = 20;
 
-            // Dark header background
+            // Dark full page background
             doc.setFillColor(15, 23, 42);
             doc.rect(0, 0, W, 297, 'F');
 
@@ -222,15 +224,15 @@
 
             // Dept name
             doc.setTextColor(226, 232, 240);
-            doc.setFontSize(16);
+            doc.setFontSize(15);
             doc.setFont('helvetica', 'bold');
             doc.text('Department of Information Technology', W/2, 26, {align:'center'});
 
             // Receipt title
             doc.setTextColor(96, 165, 250);
-            doc.setFontSize(11);
+            doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
-            doc.text('MESSAGE RECEIPT', W/2, 38, {align:'center'});
+            doc.text('MESSAGE RECEIPT', W/2, 37, {align:'center'});
 
             // Ref number
             const ref = 'TGPCET-IT-' + Date.now().toString().slice(-6);
@@ -239,7 +241,7 @@
             doc.text('Ref: ' + ref, W/2, 47, {align:'center'});
 
             // Content area
-            let y = 72;
+            let y = 70;
 
             // Section: Sender Details
             doc.setFillColor(30, 41, 59);
@@ -336,20 +338,29 @@
             doc.setFont('helvetica', 'bold');
             doc.text(ref, margin + 50, y);
 
-            // Footer
-            doc.setFillColor(30, 41, 59);
-            doc.rect(0, 272, W, 25, 'F');
+            // Footer - always at page bottom (A4 = 297mm)
+            const footerY = 265;
+            doc.setFillColor(20, 30, 48);
+            doc.rect(0, footerY, W, 32, 'F');
             doc.setFillColor(59, 130, 246);
-            doc.rect(0, 272, W, 1, 'F');
+            doc.rect(0, footerY, W, 1.5, 'F');
+
+            doc.setTextColor(203, 213, 225);
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'italic');
+            doc.text('This is an auto-generated receipt. Please keep it for your records.', W/2, footerY + 10, {align:'center'});
+
+            doc.setFillColor(59, 130, 246);
+            doc.rect(margin, footerY + 14, W - margin*2, 0.5, 'F');
 
             doc.setTextColor(148, 163, 184);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
-            doc.text('This is an auto-generated receipt. Please keep it for your records.', W/2, 281, {align:'center'});
+            doc.text('Developed by IT Department, TGPCET Nagpur', W/2, footerY + 21, {align:'center'});
 
-            doc.setTextColor(71, 85, 105);
+            doc.setTextColor(100, 116, 139);
             doc.setFontSize(7.5);
-            doc.text('Developed by IT Department, TGPCET Nagpur  |  hod.it@tgpcet.com  |  +91 97660 85909', W/2, 289, {align:'center'});
+            doc.text('hod.it@tgpcet.com  |  +91 97660 85909', W/2, footerY + 28, {align:'center'});
 
             doc.save('TGPCET_IT_Message_Receipt_' + data.name.replace(/\s+/g,'_') + '.pdf');
         }
