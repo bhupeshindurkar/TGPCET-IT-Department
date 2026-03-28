@@ -323,8 +323,8 @@ function loadDynamicContent() {
         position: fixed;
         bottom: 170px;
         right: 30px;
-        width: 380px;
-        height: 550px;
+        width: 320px;
+        height: 460px;
         background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(30,41,59,0.98));
         border-radius: 20px;
         box-shadow: 0 20px 60px rgba(0,0,0,0.5);
