@@ -1749,3 +1749,11 @@ if (mobileMenuToggle && sidebar) {
         });
     });
 }
+
+
+// Initialize dashboard when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDashboard);
+} else {
+    initDashboard();
+}
