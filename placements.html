@@ -509,9 +509,8 @@
 
     <script src="js/main.js"></script>
     <script>
-        // Initialize default placement data if not exists
-        if (!localStorage.getItem('placements')) {
-            const defaultPlacements = [
+        // Force initialize placement data with all 134 students
+        const defaultPlacements = [
                 // 2023-24 Placements (47 students)
                 { id: 1, studentName: "Samadhan Chaudhari", rollNumber: "20211027226519", company: "TCS, Pune", year: "2023-24" },
                 { id: 2, studentName: "Rahul Rameshwar Chute", rollNumber: "20211027226512", company: "ESAF Small Finance Bank", year: "2023-24" },
@@ -583,10 +582,77 @@
                 { id: 66, studentName: "Komal Kumbhare", rollNumber: "20211027226159", company: "Oakland System Pvt. Ltd.", year: "2022-23" },
                 { id: 67, studentName: "Krutika Jichkar", rollNumber: "20201027227036", company: "SGS Technical Services Pvt. Ltd", year: "2022-23" },
                 { id: 68, studentName: "Madhavi Bhute", rollNumber: "20201027227037", company: "C-Tech Group, Nagpur", year: "2022-23" },
-                { id: 69, studentName: "Sagar Wandile", rollNumber: "20201027227068", company: "Endurance Technologies Pvt. Ltd.", year: "2022-23" }
+                { id: 69, studentName: "Sagar Wandile", rollNumber: "20201027227068", company: "Endurance Technologies Pvt. Ltd.", year: "2022-23" },
+                { id: 70, studentName: "Aachal Sontakke", rollNumber: "20201027227021", company: "MSIT Services, Nagpur", year: "2022-23" },
+                { id: 71, studentName: "Pallavi Maske", rollNumber: "20201027227038", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 72, studentName: "Pavan Gedam", rollNumber: "20201027227062", company: "MSIT Services, Nagpur", year: "2022-23" },
+                { id: 73, studentName: "Pranay Tembhurne", rollNumber: "20201072227062", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 74, studentName: "Pranay Tijare", rollNumber: "20201027227063", company: "MSIT Services, Nagpur", year: "2022-23" },
+                { id: 75, studentName: "Rajat Khobragade", rollNumber: "20201027227064", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 76, studentName: "Ritik Gaikawad", rollNumber: "20201027227066", company: "GPGI Infotech, Nagpur", year: "2022-23" },
+                { id: 77, studentName: "Rohini Paradhi", rollNumber: "20201027227040", company: "Endurance Technologies Pvt. Ltd. Sambhajinagar", year: "2022-23" },
+                { id: 78, studentName: "Rohit Mahule", rollNumber: "20211027226168", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 79, studentName: "Rutuja Kamble", rollNumber: "20201027227041", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 80, studentName: "Ranjana Chakole", rollNumber: "20201027227039", company: "MSIT Services, Nagpur", year: "2022-23" },
+                { id: 81, studentName: "Sakshi Rajurkar", rollNumber: "20201027227042", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 82, studentName: "Sameer Bante", rollNumber: "20201027227070", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 83, studentName: "Saurabh Sakharkar", rollNumber: "20201027227072", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 84, studentName: "Snehal Mehar", rollNumber: "20201027227044", company: "Endurance Technologies Pvt. Ltd., Sambhajinagar", year: "2022-23" },
+                { id: 85, studentName: "Sonali Patil", rollNumber: "20201027227045", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 86, studentName: "Triveni Machhirke", rollNumber: "20201027227076", company: "Endurance Technologies Pvt. Ltd., Sambhajinagar", year: "2022-23" },
+                { id: 87, studentName: "Bharti Harinkhede", rollNumber: "20201027227028", company: "C-Tech Group, Nagpur", year: "2022-23" },
+                { id: 88, studentName: "Vaishali Ajabale", rollNumber: "20201027227047", company: "MSIT Services, Nagpur", year: "2022-23" },
+                { id: 89, studentName: "Vijay Chavan", rollNumber: "20201027227079", company: "Endurance Technologies Pvt. Ltd. Sambhajinagar", year: "2022-23" },
+                { id: 90, studentName: "Vivek Pardhi", rollNumber: "20201027227081", company: "Digitron Software & Technology, Nagpur", year: "2022-23" },
+                { id: 91, studentName: "Sejal Kezarkar", rollNumber: "20201027227024", company: "MSIT Services, Nagpur", year: "2022-23" },
+                { id: 92, studentName: "Jyoti Masram", rollNumber: "20201027227035", company: "MSIT Services, Nagpur", year: "2022-23" },
+                { id: 93, studentName: "Nikita More", rollNumber: "20211027226160", company: "MSIT Services, Nagpur", year: "2022-23" },
+                { id: 94, studentName: "Kajal Nandgaonkar", rollNumber: "20211027226158", company: "MSIT Services, Nagpur", year: "2022-23" },
+
+                // 2021-22 Placements (40 students)
+                { id: 95, studentName: "Mohit Patil", rollNumber: "20191012734024", company: "Reliance Jio Infocom Ltd, Hyderabad", year: "2021-22" },
+                { id: 96, studentName: "Sonali Goupale", rollNumber: "20191012733191", company: "Accenture Solution Pvt. Ltd., India", year: "2021-22" },
+                { id: 97, studentName: "Rakesh Charpe", rollNumber: "20191012733251", company: "Persistent, Pune", year: "2021-22" },
+                { id: 98, studentName: "Damini Rahngdale", rollNumber: "20191012733173", company: "HCL Technologies LTD., Noida", year: "2021-22" },
+                { id: 99, studentName: "Prathmesh Kalaskar", rollNumber: "20191012733214", company: "Suntel Pvt. Ltd., Pune", year: "2021-22" },
+                { id: 100, studentName: "Pravin Karemore", rollNumber: "20201027226770", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 101, studentName: "Priya Kapse", rollNumber: "20191012733187", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 102, studentName: "Dhanashri Zod", rollNumber: "20191012733177", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 103, studentName: "Aman Bhagat", rollNumber: "2019102733200", company: "MSIT Services, Nagpur", year: "2021-22" },
+                { id: 104, studentName: "Aniket Raikwar", rollNumber: "20191012733202", company: "Tech-Trading - IT", year: "2021-22" },
+                { id: 105, studentName: "Avesh Sheikh", rollNumber: "20191012733206", company: "Nitor Infotech, Pune", year: "2021-22" },
+                { id: 106, studentName: "Aniket Mathankar", rollNumber: "20191012733203", company: "MSIT Services, Nagpur", year: "2021-22" },
+                { id: 107, studentName: "Harshad Panchariya", rollNumber: "20191012733205", company: "MSIT Services, Nagpur", year: "2021-22" },
+                { id: 108, studentName: "Kajal Singh", rollNumber: "20201027226760", company: "Dhoot Transmission Pvt. Ltd, Sambhaji Nagar", year: "2021-22" },
+                { id: 109, studentName: "Kalyani Bhambre", rollNumber: "20201027226761", company: "MSIT Services, Nagpur", year: "2021-22" },
+                { id: 110, studentName: "Pooja Patel", rollNumber: "20201027226763", company: "Royals Webtech Pvt. Ltd.", year: "2021-22" },
+                { id: 111, studentName: "Manisha Purushottam Barvey", rollNumber: "20201027226762", company: "Nitor Infotech, Pune", year: "2021-22" },
+                { id: 112, studentName: "Nikita Bhad", rollNumber: "20191012733183", company: "Royals Webtech Pvt. Ltd.", year: "2021-22" },
+                { id: 113, studentName: "Anuja Milmile", rollNumber: "20201027226759", company: "Nitor Infotech, Pune", year: "2021-22" },
+                { id: 114, studentName: "Ojas Vishal Meher", rollNumber: "20201027226768", company: "Wipro Limited, Pune", year: "2021-22" },
+                { id: 115, studentName: "Pornima Lohkare", rollNumber: "20191012733185", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 116, studentName: "Prabhat Rakhunde", rollNumber: "20191012733212", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 117, studentName: "Mulkala Sambaiah", rollNumber: "20201027226767", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 118, studentName: "Prajwal Bidkar", rollNumber: "20191012733213", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 119, studentName: "Dimpal Gayakwad", rollNumber: "20191012733178", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 120, studentName: "Rashmi Mishra", rollNumber: "20201027226765", company: "NoBroker Technologies Solutions Pvt. Ltd., Banglore", year: "2021-22" },
+                { id: 121, studentName: "Ravina Meshram", rollNumber: "20191012733188", company: "Nitor Infotech", year: "2021-22" },
+                { id: 122, studentName: "Khemadevi Chaudhari", rollNumber: "20191012733180", company: "Nitor Infotech", year: "2021-22" },
+                { id: 123, studentName: "Rohit Gomkar", rollNumber: "20201027226773", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 124, studentName: "Rohit Rajbhar", rollNumber: "20191012733217", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 125, studentName: "Sakshi Gondane", rollNumber: "20191012733189", company: "Nitor Infotech, Pune", year: "2021-22" },
+                { id: 126, studentName: "Samta Wasekar", rollNumber: "20201027226766", company: "Nitor Infotech, Pune", year: "2021-22" },
+                { id: 127, studentName: "Shital Nage", rollNumber: "20191012734502", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 128, studentName: "Shivani Hulke", rollNumber: "20191012733190", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 129, studentName: "Shreyash Undirwade", rollNumber: "20201027226774", company: "Reliance Jio Infocomm Ltd, Hyderabad", year: "2021-22" },
+                { id: 130, studentName: "Vishakha Mahakalkar", rollNumber: "20191012733194", company: "MSIT Services, Nagpur", year: "2021-22" },
+                { id: 131, studentName: "Swapnil Shende", rollNumber: "20191012733219", company: "MSIT Services, Nagpur", year: "2021-22" },
+                { id: 132, studentName: "Vaishanvi Pachpohe", rollNumber: "20191012733193", company: "Wizgle Technology Consulting Private limited, Nagpur", year: "2021-22" },
+                { id: 133, studentName: "Deepak Prabhat", rollNumber: "20191012733212", company: "MSIT Services, Nagpur", year: "2021-22" },
+                { id: 134, studentName: "Vishal Prasad", rollNumber: "20201027226776", company: "MSIT Services, Nagpur", year: "2021-22" }
             ];
-            localStorage.setItem('placements', JSON.stringify(defaultPlacements));
-        }
+        // Always update localStorage with latest data
+        localStorage.setItem('placements', JSON.stringify(defaultPlacements));
 
         // Load placements from localStorage
         function loadPlacements() {
@@ -640,7 +706,7 @@
 
             // Update stats
             const totalPlacements = placements.length;
-            const statElement = document.querySelector('[data-target="130"]');
+            const statElement = document.querySelector('[data-target="134"]');
             if (statElement) {
                 statElement.setAttribute('data-target', totalPlacements);
                 statElement.textContent = totalPlacements;
