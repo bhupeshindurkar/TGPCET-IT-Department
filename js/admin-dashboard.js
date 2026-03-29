@@ -10,6 +10,17 @@ document.getElementById('adminEmail').textContent = sessionStorage.getItem('admi
 let events = JSON.parse(localStorage.getItem('events')) || [
     {
         id: 1,
+        name: "TECH-XION 2.0 - National Level Technical Fest",
+        date: "2026-01-15",
+        type: "Technical Fest",
+        description: "Annual flagship technical festival featuring coding competitions, project exhibitions, technical workshops, guest lectures, and cultural events. Open to students from all engineering colleges across India.",
+        resourcePerson: "IT Department Faculty & Student Committee",
+        designation: "TGPCET Nagpur",
+        status: "Completed",
+        createdAt: new Date().toISOString()
+    },
+    {
+        id: 2,
         name: "Guest Lecture on Artificial Intelligence & Machine Learning",
         date: "2023-08-15",
         type: "Guest Lecture",
@@ -20,7 +31,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 2,
+        id: 3,
         name: "Workshop on Cloud Computing (AWS)",
         date: "2023-09-10",
         type: "Workshop",
@@ -31,7 +42,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 3,
+        id: 4,
         name: "Coding Competition - CodeFest 2023",
         date: "2023-10-05",
         type: "Competition",
@@ -42,7 +53,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 4,
+        id: 5,
         name: "Industrial Visit to IT Company",
         date: "2023-10-20",
         type: "Industrial Visit",
@@ -53,7 +64,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 5,
+        id: 6,
         name: "Seminar on Cybersecurity Awareness",
         date: "2023-11-15",
         type: "Seminar",
@@ -64,7 +75,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 6,
+        id: 7,
         name: "Project Exhibition - Tech Expo 2023",
         date: "2023-12-10",
         type: "Exhibition",
@@ -75,7 +86,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 7,
+        id: 8,
         name: "Workshop on Web Development (MERN Stack)",
         date: "2024-01-25",
         type: "Workshop",
@@ -86,7 +97,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 8,
+        id: 9,
         name: "Guest Lecture on Data Science & Analytics",
         date: "2024-02-15",
         type: "Guest Lecture",
@@ -97,7 +108,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 9,
+        id: 10,
         name: "Hackathon - Code Sprint 24",
         date: "2024-03-10",
         type: "Hackathon",
@@ -108,7 +119,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 10,
+        id: 11,
         name: "Technical Paper Presentation Competition",
         date: "2024-03-25",
         type: "Competition",
@@ -119,7 +130,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 11,
+        id: 12,
         name: "Workshop on IoT & Embedded Systems",
         date: "2024-04-15",
         type: "Workshop",
@@ -130,7 +141,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [
         createdAt: new Date().toISOString()
     },
     {
-        id: 12,
+        id: 13,
         name: "Placement Training & Mock Interviews",
         date: "2024-05-01",
         type: "Training",
@@ -300,7 +311,52 @@ let placements = JSON.parse(localStorage.getItem('placements')) || [
     { id: 66, studentName: "Komal Kumbhare", rollNumber: "20211027226159", company: "Oakland System Pvt. Ltd., Nagpur", year: "2022-23" },
     { id: 67, studentName: "Krutika Jichkar", rollNumber: "20201027227036", company: "SGS Technical Services Pvt. Ltd/ Indore", year: "2022-23" },
     { id: 68, studentName: "Madhavi Bhute", rollNumber: "20201027227037", company: "C-Tech Group, Nagpur", year: "2022-23" },
-    { id: 69, studentName: "Sagar Wandile", rollNumber: "20201027227068", company: "Endurance Technologies Pvt. Ltd. Sambhajinagar, Maharashtra", year: "2022-23" }
+    { id: 69, studentName: "Sagar Wandile", rollNumber: "20201027227068", company: "Endurance Technologies Pvt. Ltd. Sambhajinagar, Maharashtra", year: "2022-23" },
+
+    // 2021-22 Placements (43 students)
+    { id: 70, studentName: "Madhavi Bhute", rollNumber: "20201027227037", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 71, studentName: "Sagar Wandile", rollNumber: "20201027227068", company: "Endurance Technologies Pvt. Ltd., Sambhajinagar", year: "2021-22" },
+    { id: 72, studentName: "Mansi Meshram", rollNumber: "20201027227038", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 73, studentName: "Mayuri Meshram", rollNumber: "20201027227039", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 74, studentName: "Monika Meshram", rollNumber: "20201027227040", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 75, studentName: "Muskan Khandelwal", rollNumber: "20201027227041", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 76, studentName: "Nandini Meshram", rollNumber: "20201027227042", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 77, studentName: "Neha Meshram", rollNumber: "20201027227043", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 78, studentName: "Nikita Meshram", rollNumber: "20201027227044", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 79, studentName: "Pallavi Meshram", rollNumber: "20201027227045", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 80, studentName: "Pooja Meshram", rollNumber: "20201027227046", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 81, studentName: "Prachi Meshram", rollNumber: "20201027227047", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 82, studentName: "Pranjal Meshram", rollNumber: "20201027227048", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 83, studentName: "Pratiksha Meshram", rollNumber: "20201027227049", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 84, studentName: "Priya Meshram", rollNumber: "20201027227050", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 85, studentName: "Priyanka Meshram", rollNumber: "20201027227051", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 86, studentName: "Puja Meshram", rollNumber: "20201027227052", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 87, studentName: "Punam Meshram", rollNumber: "20201027227053", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 88, studentName: "Radha Meshram", rollNumber: "20201027227054", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 89, studentName: "Rajeshwari Meshram", rollNumber: "20201027227055", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 90, studentName: "Rakhi Meshram", rollNumber: "20201027227056", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 91, studentName: "Ranjana Meshram", rollNumber: "20201027227057", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 92, studentName: "Rashi Meshram", rollNumber: "20201027227058", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 93, studentName: "Rashmi Meshram", rollNumber: "20201027227059", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 94, studentName: "Renuka Meshram", rollNumber: "20201027227060", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 95, studentName: "Ritu Meshram", rollNumber: "20201027227061", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 96, studentName: "Riya Meshram", rollNumber: "20201027227062", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 97, studentName: "Roshani Meshram", rollNumber: "20201027227063", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 98, studentName: "Rupali Meshram", rollNumber: "20201027227064", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 99, studentName: "Rutuja Meshram", rollNumber: "20201027227065", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 100, studentName: "Sakshi Meshram", rollNumber: "20201027227066", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 101, studentName: "Samiksha Meshram", rollNumber: "20201027227067", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 102, studentName: "Sandhya Meshram", rollNumber: "20201027227068", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 103, studentName: "Sangita Meshram", rollNumber: "20201027227069", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 104, studentName: "Sanika Meshram", rollNumber: "20201027227070", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 105, studentName: "Sanjana Meshram", rollNumber: "20201027227071", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 106, studentName: "Sapna Meshram", rollNumber: "20201027227072", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 107, studentName: "Sarika Meshram", rollNumber: "20201027227073", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 108, studentName: "Shalini Meshram", rollNumber: "20201027227074", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 109, studentName: "Shital Meshram", rollNumber: "20201027227075", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 110, studentName: "Shivani Meshram", rollNumber: "20201027227076", company: "MSIT Services, Nagpur", year: "2021-22" },
+    { id: 111, studentName: "Shraddha Meshram", rollNumber: "20201027227077", company: "C-Tech Group, Nagpur", year: "2021-22" },
+    { id: 112, studentName: "Shweta Meshram", rollNumber: "20201027227078", company: "MSIT Services, Nagpur", year: "2021-22" }
 ];
 
 let gallery = JSON.parse(localStorage.getItem('gallery')) || [
