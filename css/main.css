@@ -28,6 +28,9 @@ body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: var(--text-primary);
+    zoom: 87%;
+    -moz-transform: scale(0.87);
+    -moz-transform-origin: 0 0;
     line-height: 1.6;
     overflow-x: hidden;
     width: 100%;
