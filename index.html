@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TGPCET IT Department | Home</title>
+    <meta name="description"
+        content="Department of Information Technology, TGPCET Nagpur - NBA Accredited, NAAC A+ Grade">
+    <link rel="icon" type="image/png" href="images/college-logo/tgpcet-logo.png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+        /* ===== SPLASH SCREEN ===== */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background: #020817;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            transition: opacity 1s ease, visibility 1s ease;
+            overflow: hidden;
+        }
+        #splash-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Animated background grid */
+        .splash-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 8s linear infinite;
+        }
+        @keyframes gridMove {
+            from { transform: translateY(0); }
+            to   { transform: translateY(60px); }
+        }
+
+        /* Glow orbs */
+        .splash-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: orbFloat 6s ease-in-out infinite alternate;
+        }
+        .splash-orb-1 { width: 400px; height: 400px; background: #3b82f6; top: -100px; left: -100px; }
+        .splash-orb-2 { width: 300px; height: 300px; background: #8b5cf6; bottom: -80px; right: -80px; animation-delay: -3s; }
+        .splash-orb-3 { width: 200px; height: 200px; background: #06b6d4; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -1.5s; }
+        @keyframes orbFloat {
+            from { transform: scale(1); }
+            to   { transform: scale(1.3); }
+        }
+
+        /* Content wrapper */
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            text-align: center;
+            padding: 2rem 1.5rem 3rem;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        /* Logo ring */
+        .splash-logo-wrap {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            opacity: 0;
+            animation: splashLogoIn 0.9s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards;
+        }
+        .splash-logo-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            animation: ringRotate 3s linear infinite;
+        }
+        .splash-logo-ring-2 {
+            position: absolute;
+            inset: -16px;
+            border-radius: 50%;
+            border: 1px solid rgba(59,130,246,0.2);
+            animation: ringRotate 5s linear infinite reverse;
+        }
+        .splash-logo {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #0f172a;
+            padding: 6px;
+        }
+        @keyframes ringRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes splashLogoIn {
+            from { opacity: 0; transform: scale(0.4) rotate(-20deg); }
+            to   { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        /* Divider line */
+        .splash-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: splashFadeUp 0.6s ease 0.9s forwards;
+        }
+        .splash-divider-line {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59,130,246,0.6));
+        }
+        .splash-divider-line.right {
+            background: linear-gradient(90deg, rgba(59,130,246,0.6), transparent);
+        }
+        .splash-divider-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #3b82f6;
+            box-shadow: 0 0 10px #3b82f6;
+        }
+
+        /* Text */
+        .splash-welcome {
+            font-size: 0.75rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: #3b82f6;
+            font-weight: 600;
+            opacity: 0;
+            animation: splashFadeUp 0.6s ease 1.1s forwards;
+        }
+        .splash-dept {
+            font-size: clamp(1.5rem, 5vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.2;
+            color: #e2e8f0;
+            opacity: 0;
+            animation: splashFadeUp 0.7s ease 1.3s forwards;
+            max-width: 650px;
+            min-height: 3.5rem;
+        }
+        #splash-typewriter {
+            background: linear-gradient(135deg, #f8fafc 0%, #93c5fd 50%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .splash-college {
+            font-size: clamp(0.7rem, 1.5vw, 0.82rem);
+            color: #475569;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: splashFadeUp 0.6s ease 1.6s forwards;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        /* Badges */
+        .splash-badges {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            animation: splashFadeUp 0.6s ease 1.9s forwards;
+        }
+        .splash-badge {
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .splash-badge.blue  { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .splash-badge.green { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .splash-badge.purple{ background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+
+        /* Progress bar */
+        .splash-progress-wrap {
+            width: min(320px, 80vw);
+            opacity: 0;
+            animation: splashFadeUp 0.5s ease 2.1s forwards;
+        }
+        .splash-progress-bar {
+            height: 2px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .splash-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+            border-radius: 2px;
+            animation: progressFill 2.5s ease 2.2s forwards;
+        }
+        @keyframes progressFill {
+            from { width: 0%; }
+            to   { width: 100%; }
+        }
+
+        @keyframes splashFadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .splash-cursor {
+            display: inline-block;
+            color: #3b82f6;
+            animation: cursorBlink 0.8s infinite;
+            font-weight: 300;
+        }
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+
+        /* Particles */
+        .splash-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: #3b82f6;
+            opacity: 0;
+            animation: particleFloat linear infinite;
+        }
+        @keyframes particleFloat {
+            0%   { opacity: 0; transform: translateY(0) scale(0); }
+            15%  { opacity: 0.7; }
+            85%  { opacity: 0.3; }
+            100% { opacity: 0; transform: translateY(-100vh) scale(1.5); }
+        }
+
+        /* Page reveal */
+        body.page-reveal > *:not(#splash-screen):not(script) {
+            animation: pageReveal 0.9s ease forwards;
+        }
+        @keyframes pageReveal {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="splash-active">
+
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splash-screen">
+        <div class="splash-grid"></div>
+        <div class="splash-orb splash-orb-1"></div>
+        <div class="splash-orb splash-orb-2"></div>
+        <div class="splash-orb splash-orb-3"></div>
+        <div id="splash-particles"></div>
+
+        <div class="splash-content">
+            <div class="splash-logo-wrap">
+                <div class="splash-logo-ring"></div>
+                <div class="splash-logo-ring-2"></div>
+                <img src="images/college-logo/tgpcet-logo.png" alt="TGPCET" class="splash-logo">
+            </div>
+
+            <div class="splash-divider">
+                <div class="splash-divider-line"></div>
+                <div class="splash-divider-dot"></div>
+                <div class="splash-divider-line right"></div>
+            </div>
+
+            <p class="splash-welcome">Welcome to the</p>
+            <h1 class="splash-dept"><span id="splash-typewriter"></span><span class="splash-cursor">|</span></h1>
+            <p class="splash-college">Tulsiramji Gaikwad-Patil College of Engineering &amp; Technology, Nagpur</p>
+
+            <div class="splash-badges">
+                <span class="splash-badge blue">NBA Accredited</span>
+                <span class="splash-badge green">NAAC A+</span>
+                <span class="splash-badge purple">Autonomous Institute</span>
+            </div>
+
+            <div class="splash-progress-wrap">
+                <div class="splash-progress-bar">
+                    <div class="splash-progress-fill"></div>
+                </div>
+            </div>
+
+            <p style="color:#334155;font-size:0.72rem;letter-spacing:1.5px;margin-top:0.5rem;">Developed by Bhupesh Indurkar</p>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const splash = document.getElementById('splash-screen');
+
+            // Hide splash if page was refreshed (Ctrl+R / F5)
+            const isRefresh = performance.navigation.type === 1 || 
+                              (performance.getEntriesByType('navigation')[0] || {}).type === 'reload';
+
+            if (isRefresh) {
+                splash.style.display = 'none';
+                document.body.classList.remove('splash-active');
+                return;
+            }
+
+            // Fresh load - show splash
+            const container = document.getElementById('splash-particles');
+            const colors = ['#3b82f6','#8b5cf6','#06b6d4','#10b981'];
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'splash-particle';
+                const size = Math.random() * 3 + 1;
+                p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;bottom:${Math.random()*20}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*6+4}s;animation-delay:${Math.random()*4}s;`;
+                container.appendChild(p);
+            }
+
+            const text = 'Department of Information Technology';
+            const el = document.getElementById('splash-typewriter');
+            let i = 0;
+            setTimeout(() => {
+                const interval = setInterval(() => {
+                    el.textContent += text[i];
+                    i++;
+                    if (i >= text.length) clearInterval(interval);
+                }, 55);
+            }, 1400);
+
+            setTimeout(() => {
+                splash.classList.add('hide');
+                document.body.classList.remove('splash-active');
+                document.body.classList.add('page-reveal');
+            }, 4800);
+        });
+    </script>
+    <!-- Announcement Popup -->
+    <div id="announcementPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99999; align-items:center; justify-content:center; padding:1rem;">
+        <div id="announcementBox" style="background:#1e293b; border-radius:20px; max-width:600px; width:100%; position:relative; border:2px solid #3b82f6; box-shadow:0 0 60px rgba(59,130,246,0.3); animation: fadeInUp 0.4s ease; overflow:hidden; max-height:90vh; overflow-y:auto;">
+            <button onclick="closeAnnouncement()" style="position:absolute; top:1rem; right:1rem; background:rgba(0,0,0,0.5); border:none; color:#fff; width:36px; height:36px; border-radius:50%; font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10;">&times;</button>
+            <div id="annPopupImageWrap" style="display:none;">
+                <img id="annPopupImage" src="" alt="Event" style="width:100%; max-height:350px; object-fit:contain; background:#000; display:block;">
+            </div>
+            <div style="padding:2rem;">
+                <div id="annPopupIcon" style="text-align:center; font-size:2rem; margin-bottom:0.75rem;">📢</div>
+                <h2 id="annPopupTitle" style="color:#3b82f6; text-align:center; margin-bottom:1rem; font-size:1.5rem;"></h2>
+                <p id="annPopupMessage" style="color:#cbd5e1; text-align:center; line-height:1.8; font-size:1rem;"></p>
+                <div style="text-align:center; margin-top:1.5rem;">
+                    <button id="annGotItBtn" onclick="handleAnnouncementBtn()" style="background:linear-gradient(135deg,#3b82f6,#2563eb); color:#fff; border:none; padding:0.75rem 2rem; border-radius:10px; font-size:1rem; cursor:pointer; font-weight:600;">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Info Banner -->
+    <div class="top-banner">
+        <div class="banner-content">
+            <span>PART OF THE GAIKWAD-PATIL GROUP OF INSTITUTIONS</span>
+            <span class="separator">|</span>
+            <span>TULSIRAMJI GAIKWAD-PATIL COLLEGE OF ENGINEERING AND TECHNOLOGY NAGPUR</span>
+            <span class="separator">|</span>
+            <span>AN AUTONOMOUS INSTITUTE</span>
+            <span class="separator">|</span>
+            <span>ACCREDITED BY NAAC WITH 'A+' GRADE</span>
+            <span class="separator">|</span>
+            <span>NBA ACCREDITED PROGRAMS</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="images/college-logo/tgpcet-logo.png" alt="TGPCET Logo">
+                <div class="logo-text">
+                    <h1>IT DEPARTMENT</h1>
+                    <p>TGPCET NAGPUR</p>
+                </div>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="academics.html">Academics</a></li>
+                    <li><a href="faculty.html">Faculty</a></li>
+                    <li><a href="infrastructure.html">Infrastructure</a></li>
+                    <li><a href="placements.html">Placements</a></li>
+                    <li><a href="students.html">Students</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span
+                    style="display: inline-block; padding: 0.5rem 1.5rem; background: rgba(59, 130, 246, 0.1); color: #3b82f6; border-radius: 50px; font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 1.5rem;">WELCOME
+                    TO THE IT DEPARTMENT</span>
+
+                <h1 data-text="Department of Information Technology">Department of Information Technology</h1>
+
+                <p style="margin-top: 1.5rem; font-size: 1.5rem; line-height: 1.9; max-width: 950px;">Empowering
+                    students with cutting-edge technology and innovation since 2007. Nagpur's premier hub for
+                    computational excellence and industrial advancement.</p>
+
+                <!-- HOD Profile -->
+                <div class="glass-card"
+                    style="display: inline-flex; align-items: center; gap: 1rem; padding: 1rem; margin-bottom: 2rem;">
+                    <img src="images/faculty/Abhay-Rewatkar.jpg" alt="Prof. Abhay Rewatkar"
+                        style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #3b82f6; object-fit: cover;">
+                    <div>
+                        <h6 style="margin: 0; font-size: 1rem; color: #fff;">Prof. Abhay Rewatkar</h6>
+                        <p style="margin: 0; font-size: 0.8rem; color: #3b82f6;">Head of Department</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="academics.html" class="btn btn-primary">
+                        Explore Programs <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </a>
+                    <a href="contact.html" class="btn btn-secondary">Get in Touch</a>
+                    <a href="admin-login.html" class="btn btn-secondary"
+                        style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #a78bfa;">
+                        <i class="fas fa-lock" style="margin-right: 0.5rem;"></i>Admin Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="container py-5">
+        <div class="stats-grid">
+            <div class="stat-card glass-card">
+                <span class="stat-number" data-target="17">0</span>
+                <p class="stat-label">Years of Excellence</p>
+            </div>
+            <div class="stat-card glass-card">
+                <span class="stat-number" data-target="9">0</span>
+                <p class="stat-label">Advanced Labs</p>
+            </div>
+            <div class="stat-card glass-card">
+                <span class="stat-number" data-target="10">0</span>
+                <p class="stat-label">Faculty Members</p>
+            </div>
+            <div class="stat-card glass-card">
+                <span class="stat-number" data-target="240">0</span>
+                <p class="stat-label">Students Enrolled</p>
+            </div>
+            <div class="stat-card glass-card">
+                <span class="stat-number" data-target="134">0</span>
+                <p class="stat-label">Students Placed</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- About Department -->
+    <section class="container py-5">
+        <h2 class="section-title">About the Department</h2>
+        <div class="glass-card">
+            <p style="font-size:1.1rem;line-height:1.8;text-align:justify;">
+                The Department of Information Technology at Tulsiramji Gaikwad-Patil College of Engineering & Technology
+                (TGPCET) was established in 2007 with an intake of 60 students. Over the years, we have grown into a
+                premier institution for IT education in Nagpur, producing skilled professionals who excel in the global
+                technology landscape. Our department is NBA accredited, ensuring world-class education standards and
+                industry-relevant curriculum.
+            </p>
+            <p style="font-size:1.1rem;line-height:1.8;text-align:justify;margin-top:1rem;">
+                We focus on holistic development through a perfect blend of theoretical knowledge and practical skills.
+                Our state-of-the-art laboratories, experienced faculty, and strong industry connections provide students
+                with the best learning environment. The department emphasizes innovation, research, and
+                entrepreneurship, preparing students to become future leaders in technology.
+            </p>
+        </div>
+    </section>
+
+    <!-- Vision & Mission -->
+    <section class="container py-5">
+        <h2 class="section-title">Vision & Mission</h2>
+        <div class="grid grid-2">
+            <div class="glass-card">
+                <h3 style="color:#3b82f6;margin-bottom:1rem;"><i class="fas fa-eye"></i> Vision</h3>
+                <p style="font-size:1.05rem;line-height:1.7;text-align:justify;">
+                    To emerge as a learning hub and center of excellence in the domain of Information Technology.
+                </p>
+            </div>
+            <div class="glass-card">
+                <h3 style="color:#10b981;margin-bottom:1rem;"><i class="fas fa-bullseye"></i> Mission</h3>
+                <ul style="list-style:none;padding:0;">
+                    <li style="margin-bottom:0.75rem;font-size:1.05rem;padding-left:1.5rem;position:relative;">
+                        <i class="fas fa-check" style="color:#10b981;position:absolute;left:0;top:0.25rem;"></i>
+                        To impart quality technical education through effective teaching learning process.
+                    </li>
+                    <li style="margin-bottom:0.75rem;font-size:1.05rem;padding-left:1.5rem;position:relative;">
+                        <i class="fas fa-check" style="color:#10b981;position:absolute;left:0;top:0.25rem;"></i>
+                        To provide a platform to address societal issues as well as challenges faced by IT industries.
+                    </li>
+                    <li style="margin-bottom:0.75rem;font-size:1.05rem;padding-left:1.5rem;position:relative;">
+                        <i class="fas fa-check" style="color:#10b981;position:absolute;left:0;top:0.25rem;"></i>
+                        To foster a culture of research and impart innovative and entrepreneurial skills in the field of IT.
+                    </li>
+                    <li style="font-size:1.05rem;padding-left:1.5rem;position:relative;">
+                        <i class="fas fa-check" style="color:#10b981;position:absolute;left:0;top:0.25rem;"></i>
+                        To ensure overall development of students and staff by inculcating knowledge and professional ethics as a part of lifelong learning.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Pillars -->
+    <section class="container py-5">
+        <h2 class="section-title">Our Core Pillars</h2>
+        <div class="grid grid-3">
+            <div class="card">
+                <h3 style="color: #3b82f6; margin-bottom: 1rem;">🎓 Academic Excellence</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>NBA accredited B.Tech program</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Industry-aligned curriculum</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Hands-on practical training</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Regular industry workshops</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Guest lectures from experts</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3 style="color: #8b5cf6; margin-bottom: 1rem;">🔬 Research & Labs</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>AI & Machine Learning Lab</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Cloud Computing Infrastructure</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>IoT Development Center</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Cybersecurity Lab</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Data Science Lab</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3 style="color: #10b981; margin-bottom: 1rem;">💼 Industry Connect</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>40+ partner companies</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>High placement conversion rate</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Industrial training programs</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Live project opportunities</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="fas fa-check"
+                            style="color: #10b981; margin-right: 0.5rem;"></i>Hackathons and competitions</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accreditation -->
+    <section class="container py-5">
+        <div class="glass-card text-center">
+            <h2 style="margin-bottom: 2rem;">🏆 Accreditation & Recognition</h2>
+            <div class="grid grid-2">
+                <div>
+                    <h3 style="color: #3b82f6; margin-bottom: 1rem;">NBA Accredited</h3>
+                    <p>Our B.Tech Information Technology program is accredited by the National Board of Accreditation
+                        (NBA), ensuring world-class education standards.</p>
+                </div>
+                <div>
+                    <h3 style="color: #10b981; margin-bottom: 1rem;">NAAC A+ Grade</h3>
+                    <p>TGPCET is accredited with A+ Grade by NAAC, reflecting our commitment to excellence in education
+                        and infrastructure.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="container py-5">
+        <h2 class="section-title">Quick Access</h2>
+        <div class="grid grid-4">
+            <a href="academics.html" class="card text-center" style="text-decoration:none;">
+                <i class="fas fa-graduation-cap" style="font-size:2.2rem;color:#3b82f6;margin-bottom:0.75rem;display:block;"></i>
+                <h4 style="color:#e2e8f0;margin-bottom:0.4rem;">Academics</h4>
+                <p style="color:#94a3b8;font-size:0.9rem;">Explore our curriculum</p>
+            </a>
+            <a href="syllabus.html" class="card text-center" style="text-decoration:none;">
+                <i class="fas fa-file-alt" style="font-size:2.2rem;color:#8b5cf6;margin-bottom:0.75rem;display:block;"></i>
+                <h4 style="color:#e2e8f0;margin-bottom:0.4rem;">Syllabus</h4>
+                <p style="color:#94a3b8;font-size:0.9rem;">Download syllabus PDFs</p>
+            </a>
+            <a href="faculty.html" class="card text-center" style="text-decoration:none;">
+                <i class="fas fa-chalkboard-teacher" style="font-size:2.2rem;color:#10b981;margin-bottom:0.75rem;display:block;"></i>
+                <h4 style="color:#e2e8f0;margin-bottom:0.4rem;">Faculty</h4>
+                <p style="color:#94a3b8;font-size:0.9rem;">Meet our experts</p>
+            </a>
+            <a href="infrastructure.html" class="card text-center" style="text-decoration:none;">
+                <i class="fas fa-flask" style="font-size:2.2rem;color:#f59e0b;margin-bottom:0.75rem;display:block;"></i>
+                <h4 style="color:#e2e8f0;margin-bottom:0.4rem;">Labs</h4>
+                <p style="color:#94a3b8;font-size:0.9rem;">State-of-the-art facilities</p>
+            </a>
+            <a href="placements.html" class="card text-center" style="text-decoration:none;">
+                <i class="fas fa-briefcase" style="font-size:2.2rem;color:#ef4444;margin-bottom:0.75rem;display:block;"></i>
+                <h4 style="color:#e2e8f0;margin-bottom:0.4rem;">Placements</h4>
+                <p style="color:#94a3b8;font-size:0.9rem;">View placement records</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Feedback Form Section -->
+    <section class="container py-5">
+        <h2 class="section-title">Send Us Your Feedback</h2>
+        <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+            <p style="text-align: center; color: #cbd5e1; margin-bottom: 2rem; font-size: 1.1rem;">
+                Have a question or feedback? We'd love to hear from you!
+            </p>
+            <form id="homeFeedbackForm" action="https://formsubmit.co/bhupeshindurkar6@gmail.com" method="POST">
+                <!-- FormSubmit Configuration -->
+                <input type="hidden" name="_subject" value="New Feedback - TGPCET IT Department Website">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="text" name="_honey" style="display:none">
+
+                <div class="grid grid-2" style="gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: #cbd5e1; font-weight: 500;">
+                            <i class="fas fa-user" style="color: #3b82f6; margin-right: 0.5rem;"></i>Full Name
+                        </label>
+                        <input type="text" name="name" placeholder="Enter your full name" required
+                            style="width:100%;padding:0.75rem;border-radius:10px;border:1px solid rgba(59,130,246,0.3);background:rgba(255,255,255,0.05);color:#e2e8f0;font-size:1rem;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: #cbd5e1; font-weight: 500;">
+                            <i class="fas fa-envelope" style="color: #3b82f6; margin-right: 0.5rem;"></i>Email Address
+                        </label>
+                        <input type="email" name="email" placeholder="Enter your email" required
+                            style="width:100%;padding:0.75rem;border-radius:10px;border:1px solid rgba(59,130,246,0.3);background:rgba(255,255,255,0.05);color:#e2e8f0;font-size:1rem;">
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #cbd5e1; font-weight: 500;">
+                        <i class="fas fa-phone" style="color: #3b82f6; margin-right: 0.5rem;"></i>Phone Number
+                        (Optional)
+                    </label>
+                    <input type="tel" name="phone" placeholder="Enter your phone number"
+                        style="width:100%;padding:0.75rem;border-radius:10px;border:1px solid rgba(59,130,246,0.3);background:rgba(255,255,255,0.05);color:#e2e8f0;font-size:1rem;">
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #cbd5e1; font-weight: 500;">
+                        <i class="fas fa-tag" style="color: #3b82f6; margin-right: 0.5rem;"></i>Category
+                    </label>
+                    <select name="category" required
+                        style="width:100%;padding:0.75rem;border-radius:10px;border:1px solid rgba(59,130,246,0.3);background:rgba(30,41,59,0.8);color:#e2e8f0;font-size:1rem;cursor:pointer;">
+                        <option value="" style="background:#1e293b;color:#94a3b8;">Select a category</option>
+                        <option value="General Inquiry" style="background:#1e293b;color:#e2e8f0;">General Inquiry
+                        </option>
+                        <option value="Admission Query" style="background:#1e293b;color:#e2e8f0;">Admission Query
+                        </option>
+                        <option value="Placement Information" style="background:#1e293b;color:#e2e8f0;">Placement
+                            Information</option>
+                        <option value="Faculty Contact" style="background:#1e293b;color:#e2e8f0;">Faculty Contact
+                        </option>
+                        <option value="Website Feedback" style="background:#1e293b;color:#e2e8f0;">Website Feedback
+                        </option>
+                        <option value="Technical Issue" style="background:#1e293b;color:#e2e8f0;">Technical Issue
+                        </option>
+                        <option value="Suggestion" style="background:#1e293b;color:#e2e8f0;">Suggestion</option>
+                        <option value="Other" style="background:#1e293b;color:#e2e8f0;">Other</option>
+                    </select>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #cbd5e1; font-weight: 500;">
+                        <i class="fas fa-comment-alt" style="color: #3b82f6; margin-right: 0.5rem;"></i>Your Message
+                    </label>
+                    <textarea name="message" placeholder="Write your message or feedback here..." rows="5" required
+                        style="width:100%;padding:0.75rem;border-radius:10px;border:1px solid rgba(59,130,246,0.3);background:rgba(255,255,255,0.05);color:#e2e8f0;font-size:1rem;resize:vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary"
+                    style="width:100%; margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem;">
+                    <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i>Submit Feedback
+                </button>
+            </form>
+            <p style="margin-top: 1.5rem; text-align: center; color: #94a3b8; font-size: 0.9rem;">
+                <i class="fas fa-shield-alt"></i> Your information is secure and will only be used to respond to your
+                query
+            </p>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="container py-5">
+        <h2 class="section-title">Our Location</h2>
+        <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 20px;">
+            <div class="map-container" style="line-height: 0;">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d42151.79317285067!2d79.0074262543223!3d20.96346171447981!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd497d972e508c9%3A0x3bef2f11476a08b9!2sTulsiramji+Gaikwad+Patil+College+of+Engineering+and+Technology!5e0!3m2!1sen!2sin!4v1454650118365"
+                    width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>Department of Information Technology at TGPCET has been empowering students with cutting-edge
+                        technology education since 2007.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="academics.html">Academics</a></li>
+                        <li><a href="faculty.html">Faculty</a></li>
+                        <li><a href="placements.html">Placements</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="admin-login.html" style="color: #a78bfa;"><i class="fas fa-lock"></i> Admin
+                                Panel</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><strong>HOD:</strong> Prof. Abhay Rewatkar</p>
+                    <p><strong>Email:</strong> hod.it@tgpcet.com</p>
+                    <p><strong>Phone:</strong> +91 97660 85909</p>
+                    <p><strong>Website:</strong> <a href="https://www.tgpcet.com" target="_blank">www.tgpcet.com</a>
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="assets/documents/IT_Magazine_Even_24-25.pdf" target="_blank">IT Magazine
+                                2024-25</a></li>
+                        <li><a href="https://www.tgpcet.com" target="_blank">TGPCET Main Website</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 TGPCET IT Department. All rights reserved. | NBA Accredited | NAAC A+ Grade</p>
+                <p style="margin-top: 1rem; font-size: 0.95rem;">Designed & Developed by <a href="https://bhupesh-indurkar-portfolio.vercel.app/" target="_blank" style="color:#3b82f6;font-weight:700;text-decoration:none;">Bhupesh Indurkar</a> | Full Stack Developer</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                    <a href="mailto:bhupeshindurkar6@gmail.com" style="color: #3b82f6;"><i class="fas fa-envelope"></i>
+                        bhupeshindurkar6@gmail.com</a> |
+                    <a href="https://bhupesh-indurkar-portfolio.vercel.app/" target="_blank"
+                        style="color: #3b82f6;margin-left:1rem;"><i class="fas fa-globe"></i> Portfolio</a> |
+                    <a href="https://github.com/bhupeshindurkar" target="_blank"
+                        style="color: #3b82f6;margin-left:1rem;"><i class="fab fa-github"></i> GitHub</a> |
+                    <a href="https://linkedin.com/in/bhupesh-indurkar-64865b321" target="_blank"
+                        style="color: #3b82f6;margin-left:1rem;"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js?v=2.2"></script>
+    <script>
+        // Load News and Events dynamically from localStorage (if containers exist)
+        function loadHomePageContent() {
+            try {
+                // Load News
+                const news = JSON.parse(localStorage.getItem('news')) || [];
+                const newsContainer = document.getElementById('dynamic-news-container');
+                
+                if (newsContainer) {
+                    if (news.length === 0) {
+                        newsContainer.innerHTML = '<p style="color: #94a3b8; text-align: center;">No news available. Add from admin dashboard.</p>';
+                    } else {
+                        // Show latest 5 news
+                        const latestNews = news.slice(0, 5);
+                        newsContainer.innerHTML = latestNews.map(item => `
+                            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 3px solid #3b82f6;">
+                                ${item.image ? `<img src="${item.image}" alt="${item.title}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 0.5rem;">` : ''}
+                                <h4 style="color: #3b82f6; margin-bottom: 0.5rem; font-size: 1rem;">${item.title}</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 0.5rem;">${item.description || ''}</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #8b5cf6; font-size: 0.75rem; font-weight: 600;">${item.category || 'News'}</span>
+                                    <span style="color: #64748b; font-size: 0.75rem;">${new Date(item.date).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+                
+                // Load Events
+                const events = JSON.parse(localStorage.getItem('events')) || [];
+                const eventsContainer = document.getElementById('dynamic-events-container');
+                
+                if (eventsContainer) {
+                    if (events.length === 0) {
+                        eventsContainer.innerHTML = '<p style="color: #94a3b8; text-align: center;">No events available. Add from admin dashboard.</p>';
+                    } else {
+                        // Show latest 5 events
+                        const latestEvents = events.slice(0, 5);
+                        eventsContainer.innerHTML = latestEvents.map(item => `
+                            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 3px solid #10b981;">
+                                ${item.image ? `<img src="${item.image}" alt="${item.title}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 0.5rem;">` : ''}
+                                <h4 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1rem;">${item.title}</h4>
+                                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 0.5rem;">${item.description || ''}</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #3b82f6; font-size: 0.75rem;"><i class="fas fa-calendar"></i> ${new Date(item.date).toLocaleDateString()}</span>
+                                    <span style="color: #64748b; font-size: 0.75rem;">${item.location || ''}</span>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                console.log('News/Events containers not found on this page - skipping dynamic content load');
+            }
+        }
+        
+        // Load on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadHomePageContent);
+        } else {
+            loadHomePageContent();
+        }
+        
+        // Reload when coming back from admin
+        window.addEventListener('focus', loadHomePageContent);
+        
+        // Auto-reload every 5 seconds if data changes
+        setInterval(() => {
+            loadHomePageContent();
+        }, 5000);
+    </script>
+
+    <!-- Announcement Popup Script -->
+    <script>
+        const annTypeConfig = {
+            info:    { color: '#3b82f6', icon: '📢', border: '#3b82f6' },
+            warning: { color: '#f59e0b', icon: '⚠️', border: '#f59e0b' },
+            success: { color: '#10b981', icon: '✅', border: '#10b981' },
+            danger:  { color: '#ef4444', icon: '🚨', border: '#ef4444' }
+        };
+
+        let currentAnnLink = '';
+
+        function closeAnnouncement() {
+            document.getElementById('announcementPopup').style.display = 'none';
+        }
+
+        function handleAnnouncementBtn() {
+            closeAnnouncement();
+            if (currentAnnLink) {
+                window.open(currentAnnLink, '_blank');
+            }
+        }
+
+        async function loadAnnouncements() {
+            try {
+                const controller = new AbortController();
+                setTimeout(() => controller.abort(), 8000);
+                const res = await fetch('https://tgpcet-it-department.onrender.com/api/announcements', { signal: controller.signal });
+                const data = await res.json();
+                if (data && data.length > 0) {
+                    const ann = data[0];
+                    const cfg = annTypeConfig[ann.type] || annTypeConfig.info;
+                    currentAnnLink = ann.link || '';
+
+                    document.getElementById('annPopupIcon').textContent = cfg.icon;
+                    document.getElementById('annPopupTitle').textContent = ann.title;
+                    document.getElementById('annPopupTitle').style.color = cfg.color;
+                    document.getElementById('annPopupMessage').textContent = ann.message;
+                    document.getElementById('announcementBox').style.borderColor = cfg.border;
+                    document.getElementById('announcementBox').style.boxShadow = `0 0 60px ${cfg.border}44`;
+
+                    // Update button text if link exists
+                    if (ann.link) {
+                        document.getElementById('annGotItBtn').textContent = 'Register Now →';
+                    }
+
+                    // Show image if available
+                    if (ann.image) {
+                        document.getElementById('annPopupImage').src = ann.image;
+                        document.getElementById('annPopupImageWrap').style.display = 'block';
+                        document.getElementById('annPopupIcon').style.display = 'none';
+                    }
+
+                    document.getElementById('announcementPopup').style.display = 'flex';
+                }
+            } catch(e) {
+                console.log('No announcements');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAnnouncements);
+    </script>
+
+    <!-- Countdown Timer Script -->
+    <script>
+        (function() {
+            // Event date: 27 March 2026, 9:00 AM IST
+            const eventDate = new Date('2026-03-27T09:00:00+05:30').getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const diff = eventDate - now;
+
+                if (diff <= 0) {
+                    // Event is live or over
+                    document.getElementById('techxion-countdown').style.display = 'none';
+                    document.getElementById('cd-live-msg').style.display = 'block';
+                    return;
+                }
+
+                const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').textContent    = days;
+                document.getElementById('cd-hours').textContent   = String(hours).padStart(2, '0');
+                document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        })();
+    </script>
+</body>
+
+</html>

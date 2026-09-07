@@ -1,0 +1,16 @@
+# Kiro IDE files
+.kiro/
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (if any)
+node_modules/
+
+# Environment files
+.env
+.env.local
