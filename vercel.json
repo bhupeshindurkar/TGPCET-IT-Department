@@ -1,8 +1,11 @@
 {
+  "buildCommand": "echo 'Static site - no build needed'",
+  "outputDirectory": "TGPCET-IT-Department-main",
+  "installCommand": "cd TGPCET-IT-Department-main/backend && npm install",
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "/backend/server.js"
+      "destination": "TGPCET-IT-Department-main/backend/server.js"
     }
   ]
 }

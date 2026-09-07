@@ -1,0 +1,8 @@
+{
+  "name": "tgpcet-it-department",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'No build needed'",
+    "start": "node TGPCET-IT-Department-main/backend/server.js"
+  }
+}
